@@ -1,4 +1,4 @@
-package com.campus.dao;
+package main.java.com.campus.dao;
 
 import com.campus.exception.DatabaseException;
 import com.campus.model.Wallet;

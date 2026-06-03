@@ -1,6 +1,7 @@
 package com.campus.util;
 
-import org.slf4j.*;;
+import org.slf4j.*;
+
 
 public class FileLogger {
     private static final Logger logger = LoggerFactory.getLogger(FileLogger.class);

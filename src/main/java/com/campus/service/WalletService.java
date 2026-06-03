@@ -2,6 +2,8 @@
 
 package com.campus.service;
 
+import java.io.File;
+import java.nio.channels.FileLock;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import com.campus.model.Transaction;
 import com.campus.model.TxnType;
 import com.campus.model.Wallet;
 import com.campus.util.DBConnection;
+import com.campus.util.FileLogger;
 
 public class WalletService implements TransferHandler {
 
@@ -46,6 +49,8 @@ public class WalletService implements TransferHandler {
             if (receiverWallet == null) throw new WalletNotFoundException("Wallet not found: " + receiverId);
 
             walletDAO.atomicTransfer(senderId, receiverId, amt, conn);
+
+            FileLogger.logInfo("Transferred " + amt + " from " + senderId + " to " + receiverId);
 
             txnDAO.insert(new Transaction(
                 UUID.randomUUID().toString(),
@@ -120,7 +125,7 @@ public class WalletService implements TransferHandler {
                 studentId, studentId, amt,
                 TxnType.WITHDRAW, LocalDateTime.now(), "SUCCESS"
             ), conn);
-
+            FileLogger.logInfo("Withdrew " + amt + " from studentId=" + studentId);
             conn.commit();
 
         } catch (Exception e) {
@@ -148,6 +153,7 @@ public class WalletService implements TransferHandler {
             .toList();
         Wallet wallet = walletDAO.getByStudentId(studentId);
         if (todayTxns.size() >= (int) wallet.getDailyTransferLimit())
+            FileLogger.logInfo("Daily transfer limit reached for studentId=" + studentId);
             throw new DailyTransferLimitException("Daily transfer limit reached");
     }
 

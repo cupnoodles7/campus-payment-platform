@@ -1,13 +1,11 @@
-
-
 package com.campus.console;
-
 import com.campus.exception.BalanceCapExceededException;
 import com.campus.exception.DailyTransferLimitException;
 import com.campus.exception.InsufficientBalanceException;
 import com.campus.exception.InvalidAmountException;
 import com.campus.exception.WalletNotFoundException;
 import com.campus.service.WalletService;
+import com.campus.util.FileLogger;
 
 import java.util.Scanner;
 
@@ -52,6 +50,7 @@ public class WalletMenu {
             walletService.deposit(studentId, amount);
             System.out.println("Deposit successful.");
         } catch (InvalidAmountException | BalanceCapExceededException | WalletNotFoundException e) {
+            FileLogger.logWarn("Deposit failed: " + e.getMessage());
             System.out.println("Deposit failed: " + e.getMessage());
         }
     }
@@ -63,6 +62,7 @@ public class WalletMenu {
             walletService.withdraw(studentId, amount);
             System.out.println("Withdrawal successful.");
         } catch (InvalidAmountException | InsufficientBalanceException | WalletNotFoundException e) {
+            FileLogger.logWarn("Withdrawal failed: " + e.getMessage());
             System.out.println("Withdrawal failed: " + e.getMessage());
         }
     }
@@ -76,6 +76,7 @@ public class WalletMenu {
             System.out.println("Transfer successful.");
         } catch (InvalidAmountException | InsufficientBalanceException
                  | DailyTransferLimitException | WalletNotFoundException e) {
+            FileLogger.logWarn("Transfer failed: " + e.getMessage());
             System.out.println("Transfer failed: " + e.getMessage());
         }
     }
@@ -86,6 +87,7 @@ public class WalletMenu {
             double balance = walletService.getBalance(studentId);
             System.out.printf("Current balance: %.2f%n", balance);
         } catch (WalletNotFoundException e) {
+            FileLogger.logWarn("Balance lookup failed: " + e.getMessage());
             System.out.println("Could not fetch balance: " + e.getMessage());
         }
     }

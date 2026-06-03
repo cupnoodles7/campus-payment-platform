@@ -5,5 +5,5 @@ package com.campus.interfaces;
 
 @FunctionalInterface
 public interface TransferHandler {
-    void transfer(int from, int to, double amt);
+    void handle(int from, int to, double amt);
 }

@@ -4,10 +4,12 @@ import com.campus.exception.DatabaseException;
 import com.campus.model.Wallet;
 import com.campus.util.DBConnection;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.campus.util.FileLogger;
 
 public class WalletDAO {
 
@@ -24,6 +26,7 @@ public class WalletDAO {
             ps.setDouble(4, w.getBalanceCap());
             ps.setDouble(5, w.getTodayTransferred());
             ps.executeUpdate();
+            FileLogger.logInfo("Inserted wallet for studentId=" + w.getStudentId());
         } catch (SQLException e) {
             throw new DatabaseException("Failed to insert wallet for student " + w.getStudentId(), e);
         }
@@ -34,6 +37,7 @@ public class WalletDAO {
         String sql = "SELECT * FROM wallets WHERE student_id = ?";
         try (Connection c = DBConnection.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
+            FileLogger.logInfo("Loading wallet for studentId=" + studentId);
             ps.setInt(1, studentId);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? mapRow(rs) : null;
@@ -49,6 +53,7 @@ public class WalletDAO {
             ps.setDouble(1, newBalance);
             ps.setInt(2, studentId);
             ps.executeUpdate();
+            FileLogger.logInfo("Updated balance of " + studentId + " to " + newBalance);
         } catch (SQLException e) {
             throw new DatabaseException("Failed to update balance for student " + studentId, e);
         }
@@ -61,6 +66,7 @@ public class WalletDAO {
             ps.setDouble(1, newTodayTransferred);
             ps.setInt(2, studentId);
             ps.executeUpdate();
+            FileLogger.logInfo("Updated Today Transferred of " + studentId + " to " + newTodayTransferred);
         } catch (SQLException e) {
             throw new DatabaseException("Failed to update todayTransferred for student " + studentId, e);
         }
@@ -78,10 +84,12 @@ public class WalletDAO {
             ps1.setDouble(2, amount);
             ps1.setInt(3, senderId);
             ps1.executeUpdate();
+            FileLogger.logInfo("Debited wallet of studentId=" + senderId + " by " + amount);
 
             ps2.setDouble(1, amount);
             ps2.setInt(2, receiverId);
             ps2.executeUpdate();
+            FileLogger.logInfo("Credited wallet of studentId=" + receiverId + " by " + amount);
         } catch (SQLException e) {
             throw new DatabaseException(
                     "Failed atomicTransfer " + senderId + " -> " + receiverId, e);

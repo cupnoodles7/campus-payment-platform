@@ -2,8 +2,6 @@
 
 package com.campus.service;
 
-import java.io.File;
-import java.nio.channels.FileLock;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;

@@ -1,13 +1,14 @@
-package main.java.com.campus.dao;
-
-import com.campus.exception.DatabaseException;
-import com.campus.model.Wallet;
-import com.campus.util.DBConnection;
+package com.campus.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.campus.exception.DatabaseException;
+import com.campus.model.Wallet;
+import com.campus.util.DBConnection;
+import com.campus.util.FileLogger;
 
 public class WalletDAO {
 
@@ -25,6 +26,7 @@ public class WalletDAO {
             ps.setDouble(5, w.getTodayTransferred());
             ps.executeUpdate();
         } catch (SQLException e) {
+            FileLogger.logError("WalletDAO.insert failed for student " + w.getStudentId() + ": " + e.getMessage());
             throw new DatabaseException("Failed to insert wallet for student " + w.getStudentId(), e);
         }
     }
@@ -39,6 +41,7 @@ public class WalletDAO {
                 return rs.next() ? mapRow(rs) : null;
             }
         } catch (SQLException e) {
+            FileLogger.logError("WalletDAO.getByStudentId failed for student " + studentId + ": " + e.getMessage());
             throw new DatabaseException("Failed to load wallet for student " + studentId, e);
         }
     }
@@ -50,6 +53,7 @@ public class WalletDAO {
             ps.setInt(2, studentId);
             ps.executeUpdate();
         } catch (SQLException e) {
+            FileLogger.logError("WalletDAO.updateBalance failed for student " + studentId + ": " + e.getMessage());
             throw new DatabaseException("Failed to update balance for student " + studentId, e);
         }
     }
@@ -62,6 +66,7 @@ public class WalletDAO {
             ps.setInt(2, studentId);
             ps.executeUpdate();
         } catch (SQLException e) {
+            FileLogger.logError("WalletDAO.updateTodayTransferred failed for student " + studentId + ": " + e.getMessage());
             throw new DatabaseException("Failed to update todayTransferred for student " + studentId, e);
         }
     }
@@ -82,7 +87,11 @@ public class WalletDAO {
             ps2.setDouble(1, amount);
             ps2.setInt(2, receiverId);
             ps2.executeUpdate();
+
+            FileLogger.logInfo("WalletDAO.atomicTransfer applied: " + senderId + " -> " + receiverId + " amount=" + amount);
         } catch (SQLException e) {
+            FileLogger.logError("WalletDAO.atomicTransfer failed " + senderId + " -> " + receiverId
+                    + " amount=" + amount + ": " + e.getMessage());
             throw new DatabaseException(
                     "Failed atomicTransfer " + senderId + " -> " + receiverId, e);
         }

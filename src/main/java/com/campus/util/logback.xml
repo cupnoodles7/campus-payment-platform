@@ -1,0 +1,57 @@
+<!-- <configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration> -->
+
+
+<configuration>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        FILE NAME
+        <file>logs/applications.log</file>
+        APPEND LOGS
+        <append>true</append>
+         LOG PATTERN
+         <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    ROOT LOGGER
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
+
+<!-- Rolling File Appender can be of 2 types: Time-based and Size-based
+    1. Time-based rolling file appender logs data into new file after a certain time interval (e.g., daily, hourly).
+    2. Size-based rolling file appender creates a new log file when the current log file reaches a specified size limit (e.g., 10MB).
+
+    MDC - Mapped Diagnostic Context is a feature in logging frameworks that allows you to associate contextual information with log messages like user id or session id in the log messages, which can be very helpful in troubleshooting and analyzing logs, especially in multi-threaded applications.
+ -->
+
+<!-- <configuration>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        FILE NAME
+        <file>logs/applications.log</file>
+        APPEND LOGS
+        <append>true</append>
+         LOG PATTERN
+         <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} %x{userId} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    ROOT LOGGER
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE" />
+    </root>
+</configuration> -->

@@ -1,4 +1,4 @@
-package main.java.com.campus.dao;
+package com.campus.dao;
 
 import com.campus.exception.DatabaseException;
 import com.campus.model.Transaction;
@@ -8,7 +8,6 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import com.campus.util.FileLogger;
 
 public class TransactionDAO {
@@ -25,7 +24,7 @@ public class TransactionDAO {
             ps.setString(7, txn.getStatus());
             ps.executeUpdate();
         } catch (SQLException e) {
-            FileLogger.error("Failed to insert transaction: " + e.getMessage());
+            FileLogger.logError("Failed to insert transaction: " + e.getMessage());
             throw new DatabaseException("Failed to insert transaction: " + e.getMessage(), e);
         }
     }
@@ -40,7 +39,7 @@ public class TransactionDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) {
-            FileLogger.error("findByStudentId failed for id=" + studentId + ": " + e.getMessage());
+            FileLogger.logError("findByStudentId failed for id=" + studentId + ": " + e.getMessage());
             throw new DatabaseException("findByStudentId failed: " + e.getMessage(), e);
         }
         return list;
@@ -55,7 +54,7 @@ public class TransactionDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) {
-            FileLogger.error("findByType failed for type=" + type + ": " + e.getMessage());
+            FileLogger.logError("findByType failed for type=" + type + ": " + e.getMessage());
             throw new DatabaseException("findByType failed: " + e.getMessage(), e);
         }
         return list;
@@ -72,7 +71,7 @@ public class TransactionDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) {
-            FileLogger.error("findBetweenDates failed for from=" + from + ", to=" + to + ": " + e.getMessage());
+            FileLogger.logError("findBetweenDates failed for from=" + from + ", to=" + to + ": " + e.getMessage());
             throw new DatabaseException("findBetweenDates failed: " + e.getMessage(), e);
         }
         return list;
@@ -86,7 +85,7 @@ public class TransactionDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) {
-            FileLogger.error("findAll failed: " + e.getMessage());
+            FileLogger.logError("findAll failed: " + e.getMessage());
             throw new DatabaseException("findAll failed: " + e.getMessage(), e);
         }
         return list;

@@ -50,4 +50,6 @@ public class Transaction {
         return String.format("[%s] %s | ₹%.2f | %s → %s | %s | %s",
             txnId, type, amount, senderId, receiverId, status, timestamp);
     }
+    
+
 }

@@ -1,18 +1,18 @@
-package main.java.com.campus.service;
+package com.campus.service;
 
-import main.java.com.campus.dao.StudentDAO;
-//import main.java.com.campus.dao.WalletDAO;
-import main.java.com.campus.exception.*;
-import main.java.com.campus.model.Student;
-//import main.java.com.campus.model.Wallet;
-//import main.java.com.campus.util.FileLogger;
+import com.campus.dao.StudentDAO;
+import com.campus.dao.WalletDAO;
+import com.campus.exception.*;
+import com.campus.model.Student;
+import com.campus.model.Wallet;
+import com.campus.util.FileLogger;
 import java.util.Comparator;
 import java.util.List;
 
 public class StudentService {
 
     private final StudentDAO studentDAO = new StudentDAO();
-    //private final WalletDAO walletDAO = new WalletDAO();
+    private final WalletDAO walletDAO = new WalletDAO();
 
     public void registerStudent(Student s) {
         if (s.getEmail().isEmpty() && s.getPhone().isEmpty())
@@ -22,14 +22,8 @@ public class StudentService {
             throw new DuplicateStudentException("Student ID " + s.getStudentId() + " already exists.");
 
         studentDAO.insert(s);
-        /*walletDAO.insert(Wallet.builder()
-                .studentId(s.getStudentId())
-                .balance(0.0)
-                .dailyTransferLimit(5000.0)
-                .balanceCap(20000.0)
-                .todayTransferred(0.0)
-                .build());*/
-        //FileLogger.logInfo("Student registered — ID: " + s.getStudentId());
+        walletDAO.insert(new Wallet(0, s.getStudentId(), 0.0, 5000.0, 20000.0, 0.0));
+        FileLogger.logInfo("Student registered — ID: " + s.getStudentId());
     }
 
     public void updateStudent(Student s) {
@@ -40,7 +34,7 @@ public class StudentService {
             throw new InvalidAmountException("Either email or phone must be provided.");
 
         studentDAO.update(s);
-        //FileLogger.logInfo("Student updated — ID: " + s.getStudentId());
+        FileLogger.logInfo("Student updated — ID: " + s.getStudentId());
     }
 
     public Student searchById(int id) {
@@ -48,7 +42,7 @@ public class StudentService {
         if (s == null)
             throw new StudentNotFoundException("Student ID " + id + " not found.");
 
-        //s.setWallet(walletDAO.getByStudentId(id));
+        s.setWallet(walletDAO.getByStudentId(id));
         return s;
     }
 

@@ -1,4 +1,4 @@
-package main.java.com.campus.model;
+package com.campus.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

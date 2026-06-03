@@ -1,8 +1,8 @@
-package main.java.com.campus.console;
+package com.campus.console;
 
-import main.java.com.campus.exception.*;
-import main.java.com.campus.model.Student;
-import main.java.com.campus.service.StudentService;
+import com.campus.exception.*;
+import com.campus.model.Student;
+import com.campus.service.StudentService;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Scanner;

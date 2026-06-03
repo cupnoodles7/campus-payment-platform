@@ -1,9 +1,10 @@
 // Author: Ahana
 // student-to-campus service payment
 
-package main.java.com.campus.interfaces;
+package com.campus.interfaces;
+import com.campus.exception.*;
 
 @FunctionalInterface
 public interface PaymentProcessor {
-    campus(int sID, double amount) throws PaymentFailedException;
+   void campus(int sID, double amount) throws PaymentFailedException;
 }

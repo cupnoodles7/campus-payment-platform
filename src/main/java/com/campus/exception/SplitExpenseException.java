@@ -1,7 +1,8 @@
-package main.java.com.campus.exception;
+package com.campus.exception;
 
-public class PaymentFailedException extends RuntimeException {
-    public PaymentFailedException(String message) {
+
+public class SplitExpenseException extends RuntimeException {
+    public SplitExpenseException(String message) {
         super(message);
     }
 }

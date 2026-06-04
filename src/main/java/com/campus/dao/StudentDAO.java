@@ -76,9 +76,10 @@ public class StudentDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return mapRow(rs);
-            return null;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapRow(rs);
+                return null;
+            }
         } catch (SQLException e) {
             throw new DatabaseException("Find failed: " + e.getMessage(), e);
         }
@@ -89,8 +90,9 @@ public class StudentDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getInt(1) > 0;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1) > 0;
+            }
         } catch (SQLException e) {
             throw new DatabaseException("Check failed: " + e.getMessage(), e);
         }
@@ -102,8 +104,9 @@ public class StudentDAO {
         List<Student> list = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) list.add(mapRow(rs));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
+            }
         } catch (SQLException e) {
             throw new DatabaseException("FetchAll failed: " + e.getMessage(), e);
         }

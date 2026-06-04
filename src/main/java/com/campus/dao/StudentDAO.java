@@ -24,9 +24,17 @@ public class StudentDAO {
 
     // inserts student, SQL auto generates student_id, returns it
     public int insert(Student s) {
+        try (Connection conn = DBConnection.getConnection()) {
+            return insert(s, conn);
+        } catch (SQLException e) {
+            throw new DatabaseException("Insert failed: " + e.getMessage(), e);
+        }
+    }
+
+    // transactional variant — runs on the caller's connection (NOT closed here)
+    public int insert(Student s, Connection conn) {
         String sql = "INSERT INTO students (name, email, phone, pin) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, s.getName());
             ps.setString(2, s.getEmail().orElse(null));
             ps.setString(3, s.getPhone().orElse(null));
@@ -46,9 +54,17 @@ public class StudentDAO {
 
     // links wallet_id back to student row after wallet is created
     public void updateWalletId(int studentId, int walletId) {
+        try (Connection conn = DBConnection.getConnection()) {
+            updateWalletId(studentId, walletId, conn);
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to link walletId: " + e.getMessage(), e);
+        }
+    }
+
+    // transactional variant — runs on the caller's connection (NOT closed here)
+    public void updateWalletId(int studentId, int walletId, Connection conn) {
         String sql = "UPDATE students SET wallet_id=? WHERE student_id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, walletId);
             ps.setInt(2, studentId);
             ps.executeUpdate();
@@ -87,18 +103,18 @@ public class StudentDAO {
         }
     }
 
-    // used for login — looks a student up by their (unique) email
-    public Student findByEmail(String email) {
-        String sql = "SELECT * FROM students WHERE email=?";
+    // used to enforce unique phone numbers — returns the matching student or null
+    public Student findByPhone(String phone) {
+        String sql = "SELECT * FROM students WHERE phone=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, email);
+            ps.setString(1, phone);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
                 return null;
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Find by email failed: " + e.getMessage(), e);
+            throw new DatabaseException("Find by phone failed: " + e.getMessage(), e);
         }
     }
 

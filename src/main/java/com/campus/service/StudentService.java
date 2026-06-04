@@ -5,7 +5,10 @@ import com.campus.dao.WalletDAO;
 import com.campus.exception.*;
 import com.campus.model.Student;
 import com.campus.model.Wallet;
+import com.campus.util.DBConnection;
 import com.campus.util.FileLogger;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,50 +17,74 @@ public class StudentService {
     private final StudentDAO studentDAO = new StudentDAO();
     private final WalletDAO walletDAO = new WalletDAO();
 
-    // register — returns generated student ID so menu can display it
+    // register — returns generated student ID so menu can display it.
+    // All inserts run on a single transaction: if any step fails the whole thing
+    // rolls back, so we never leave a half-written student/wallet behind.
     public int registerStudent(Student s) {
-        if (s.getEmail().isEmpty() && s.getPhone().isEmpty())
-            throw new InvalidAmountException("Either email or phone must be provided.");
+        // phone is mandatory and must be unique; email is optional. Login is by ID + PIN.
+        String phone = requirePhone(s);
+        Student existing = studentDAO.findByPhone(phone);
+        if (existing != null)
+            throw new DuplicateStudentException("Phone number " + phone + " is already registered.");
 
-        // step 1 — SQL auto generates student_id
-        int generatedStudentId = studentDAO.insert(s);
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
 
-        // step 2 — create wallet using generated student_id
-        walletDAO.insert(new Wallet(0, generatedStudentId, 0.0, 5000.0, 20000.0, 0.0));
+            // step 1 — SQL auto generates student_id
+            int generatedStudentId = studentDAO.insert(s, conn);
 
-        // step 3 — fetch wallet object to get generated wallet_id
-        Wallet wallet = walletDAO.getByStudentId(generatedStudentId);
+            // step 2 — create wallet using generated student_id, get generated wallet_id back
+            int walletId = walletDAO.insert(
+                    new Wallet(0, generatedStudentId, 0.0, 5000.0, 20000.0, 0.0), conn);
 
-        // step 4 — link wallet_id into student row
-        studentDAO.updateWalletId(generatedStudentId, wallet.getWalletId());
+            // step 3 — link wallet_id into student row
+            studentDAO.updateWalletId(generatedStudentId, walletId, conn);
 
-        FileLogger.logInfo("Student registered — ID: " + generatedStudentId +
-                           ", WalletID: " + wallet.getWalletId());
-        return generatedStudentId;
+            conn.commit();
+            FileLogger.logInfo("Student registered — ID: " + generatedStudentId +
+                               ", WalletID: " + walletId);
+            return generatedStudentId;
+        } catch (SQLException | DatabaseException e) {
+            rollbackQuietly(conn);
+            FileLogger.logError("Registration rolled back: " + e.getMessage());
+            throw new DatabaseException("Registration failed: " + e.getMessage(), e);
+        } finally {
+            closeQuietly(conn);
+        }
     }
 
-    // login — called from MainMenu using student ID only
-    public Student login(int studentId) {
+    private void rollbackQuietly(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                FileLogger.logError("Rollback failed: " + ex.getMessage());
+            }
+        }
+    }
+
+    private void closeQuietly(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                FileLogger.logError("Closing connection failed: " + ex.getMessage());
+            }
+        }
+    }
+
+    // login by Student ID + PIN — returns the student (with wallet) or null if credentials are wrong
+    public Student login(int studentId, int pin) {
         Student s = studentDAO.findById(studentId);
-        if (s == null) {
-            FileLogger.logWarn("Login failed — Student ID " + studentId + " not found.");
-            throw new StudentNotFoundException("Student ID " + studentId + " not found.");
+        if (s == null || s.getPin() != pin) {
+            FileLogger.logWarn("Login failed for Student ID: " + studentId);
+            return null;
         }
         // fetch wallet object and attach to student at runtime
         s.setWallet(walletDAO.getByStudentId(studentId));
         FileLogger.logInfo("Student logged in — ID: " + studentId);
-        return s;
-    }
-
-    // login by email + PIN — returns the student (with wallet) or null if credentials are wrong
-    public Student login(String email, int pin) {
-        Student s = studentDAO.findByEmail(email);
-        if (s == null || s.getPin() != pin) {
-            FileLogger.logWarn("Login failed for email: " + email);
-            return null;
-        }
-        s.setWallet(walletDAO.getByStudentId(s.getStudentId()));
-        FileLogger.logInfo("Student logged in — ID: " + s.getStudentId());
         return s;
     }
 
@@ -71,11 +98,21 @@ public class StudentService {
         if (studentDAO.findById(s.getStudentId()) == null)
             throw new StudentNotFoundException("Student ID " + s.getStudentId() + " not found.");
 
-        if (s.getEmail().isEmpty() && s.getPhone().isEmpty())
-            throw new InvalidAmountException("Either email or phone must be provided.");
+        String phone = requirePhone(s);
+        Student existing = studentDAO.findByPhone(phone);
+        if (existing != null && existing.getStudentId() != s.getStudentId())
+            throw new DuplicateStudentException("Phone number " + phone + " is already registered.");
 
         studentDAO.update(s);
         FileLogger.logInfo("Student updated — ID: " + s.getStudentId());
+    }
+
+    // ensures a non-blank phone number is present, returns the trimmed value
+    private String requirePhone(Student s) {
+        String phone = s.getPhone().map(String::trim).orElse("");
+        if (phone.isEmpty())
+            throw new InvalidAmountException("Phone number is required.");
+        return phone;
     }
 
     public Student searchById(int id) {

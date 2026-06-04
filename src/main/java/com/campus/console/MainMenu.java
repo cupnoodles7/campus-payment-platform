@@ -1,6 +1,7 @@
 package com.campus.console;
 import com.campus.exception.InvalidAmountException;
 import com.campus.exception.DatabaseException;
+import com.campus.exception.DuplicateStudentException;
 import com.campus.model.Student;
 import com.campus.service.StudentService;
 import com.campus.util.DBConnection;
@@ -52,13 +53,12 @@ public class MainMenu {
             System.out.print("Name: ");
             String name = sc.nextLine().trim();
 
-            System.out.print("Phone (Enter to skip): ");
-            String phone = sc.nextLine().trim();
+            String phone = readRequired("Phone: ");
 
             System.out.print("Email (Enter to skip): ");
             String email = sc.nextLine().trim();
 
-            int pin = readPin("Set a numeric PIN (used for login & transfers): ");
+            int pin = readInt("Set a numeric PIN (used for login & transfers): ");
 
             Student s = new Student();
             s.setName(name);
@@ -71,10 +71,10 @@ public class MainMenu {
 
             System.out.println("\nRegistration successful!");
             System.out.println("Your Student ID : " + studentId);
-            System.out.println("Login with your email and PIN.");
+            System.out.println("Save this ID — login with your Student ID and PIN.");
             FileLogger.logInfo("New student registered: " + studentId);
 
-        } catch (InvalidAmountException e) {
+        } catch (InvalidAmountException | DuplicateStudentException e) {
             System.out.println("Registration failed: " + e.getMessage());
         } catch (DatabaseException e) {
             System.out.println("Registration failed: " + e.getMessage());
@@ -88,13 +88,11 @@ public class MainMenu {
         int attempts = 0;
 
         while (attempts < 3) {
-            System.out.print("Email: ");
-            String email = sc.nextLine().trim();
-
-            int pin = readPin("PIN: ");
+            int studentId = readInt("Student ID: ");
+            int pin = readInt("PIN: ");
 
             try {
-                Student s = studentService.login(email, pin);
+                Student s = studentService.login(studentId, pin);
                 if (s != null) {
                     System.out.println("Login successful! Welcome, " + s.getName() + ".");
                     return s;
@@ -113,14 +111,24 @@ public class MainMenu {
         return null;
     }
 
-    // reads a whole-number PIN, re-prompting until valid
-    private int readPin(String prompt) {
+    // reads a non-empty value, re-prompting until something is entered
+    private String readRequired(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = sc.nextLine().trim();
+            if (!line.isEmpty()) return line;
+            System.out.println("This field is required.");
+        }
+    }
+
+    // reads a whole number, re-prompting until valid
+    private int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
             try {
                 return Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("PIN must be a number.");
+                System.out.println("Please enter a whole number.");
             }
         }
     }
@@ -140,12 +148,13 @@ public class MainMenu {
  
             String choice = sc.nextLine().trim();
  
+            int studentId = student.getStudentId();
             switch (choice) {
-                case "1" -> new WalletMenu(sc).show();
-                case "2" -> new PaymentMenu(sc).show();
-                case "3" -> new SplitMenu(sc).show();
-                case "4" -> new ReportMenu(sc).show();
-                case "5" -> new StudentMenu().show();
+                case "1" -> new WalletMenu(sc, studentId).show();
+                case "2" -> new PaymentMenu(sc, studentId).show();
+                case "3" -> new SplitMenu(sc, studentId).show();
+                case "4" -> new ReportMenu(sc, studentId).show();
+                case "5" -> new StudentMenu(sc, studentId).show();
                 case "0" -> {
                     System.out.println("Logged out successfully.");
                     exit = true;

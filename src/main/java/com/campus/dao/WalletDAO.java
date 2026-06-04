@@ -9,17 +9,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import com.campus.util.FileLogger;
 
 public class WalletDAO {
 
     //Create a wallet row for a newly registered student
     public void insert(Wallet w) {
+        try (Connection c = DBConnection.getConnection()) {
+            insert(w, c);
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to insert wallet for student " + w.getStudentId(), e);
+        }
+    }
+
+    //Transactional variant — runs on the caller's connection (NOT closed here), returns the generated wallet_id
+    public int insert(Wallet w, Connection c) {
         String sql = "INSERT INTO wallets "
                 + "(student_id, balance, daily_transfer_limit, balance_cap, today_transferred) "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try (Connection c = DBConnection.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, w.getStudentId());
             ps.setDouble(2, w.getBalance());
             ps.setDouble(3, w.getDailyTransferLimit());
@@ -27,6 +36,10 @@ public class WalletDAO {
             ps.setDouble(5, w.getTodayTransferred());
             ps.executeUpdate();
             FileLogger.logInfo("Inserted wallet for studentId=" + w.getStudentId());
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) return keys.getInt(1);
+            }
+            throw new DatabaseException("Failed to get generated wallet ID for student " + w.getStudentId(), null);
         } catch (SQLException e) {
             throw new DatabaseException("Failed to insert wallet for student " + w.getStudentId(), e);
         }

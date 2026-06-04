@@ -21,10 +21,12 @@ public class SplitMenu {
 
     private final Scanner scanner;
     private final SplitExpenseService splitExpenseService;
+    private final int studentId;   // the logged-in user (payer)
 
-    public SplitMenu(Scanner scanner) {
+    public SplitMenu(Scanner scanner, int studentId) {
         this.scanner = scanner;
         this.splitExpenseService = new SplitExpenseService();
+        this.studentId = studentId;
     }
 
     public void show() {
@@ -59,7 +61,7 @@ public class SplitMenu {
     private void handleEqualSplit() {
         while (true) {
             try {
-                int paidBy = readInt("Enter your (payer) student ID: ");
+                int paidBy = studentId;
                 int memberCount = readInt("Enter number of people who owe (excluding yourself): ");
 
                 List<Integer> members = new ArrayList<>();
@@ -93,7 +95,7 @@ public class SplitMenu {
     private void handleUnequalSplit() {
         while (true) {
             try {
-                int paidBy = readInt("Enter your (payer) student ID: ");
+                int paidBy = studentId;
                 int memberCount = readInt("Enter number of people who owe (excluding yourself): ");
 
                 List<Integer> members = new ArrayList<>();
@@ -130,7 +132,7 @@ public class SplitMenu {
     // ── Settle one due ────────────────────────────────────────
     private void handleSettleUp() {
         try {
-            int payerId = readInt("Enter your student ID: ");
+            int payerId = studentId;
             int dueId   = readInt("Enter due ID to settle: ");
             splitExpenseService.settleUp(dueId, payerId);
             System.out.println("Due settled successfully.");
@@ -144,7 +146,7 @@ public class SplitMenu {
     // ── Settle all dues ───────────────────────────────────────
     private void handleSettleAll() {
         try {
-            int payerId = readInt("Enter your student ID: ");
+            int payerId = studentId;
 
             List<SplitExpense> pending = splitExpenseService.listPending(payerId);
             if (pending.isEmpty()) {
@@ -174,7 +176,7 @@ public class SplitMenu {
     // ── View pending dues ─────────────────────────────────────
     private void handleListPending() {
         try {
-            int payerId = readInt("Enter your student ID: ");
+            int payerId = studentId;
             List<SplitExpense> pending = splitExpenseService.listPending(payerId);
             if (pending.isEmpty()) {
                 System.out.println("No pending dues.");
@@ -190,7 +192,7 @@ public class SplitMenu {
     // ── View all dues ─────────────────────────────────────────
     private void handleListAll() {
         try {
-            int payerId = readInt("Enter your student ID: ");
+            int payerId = studentId;
             List<SplitExpense> all = splitExpenseService.listAll(payerId);
             if (all.isEmpty()) {
                 System.out.println("No dues found.");

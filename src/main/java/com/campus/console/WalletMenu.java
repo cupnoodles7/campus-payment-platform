@@ -15,11 +15,13 @@ public class WalletMenu {
     private final Scanner scanner;
     private final WalletService walletService;
     private final StudentService studentService;
+    private final int studentId;   // the logged-in user
 
-    public WalletMenu(Scanner scanner) {
+    public WalletMenu(Scanner scanner, int studentId) {
         this.scanner = scanner;
         this.walletService = new WalletService();
         this.studentService = new StudentService();
+        this.studentId = studentId;
     }
 
     public void show() {
@@ -48,7 +50,6 @@ public class WalletMenu {
 
     private void handleDeposit() {
         try {
-            int studentId = readInt("Enter student ID: ");
             double amount = readDouble("Enter amount to add: ");
             walletService.deposit(studentId, amount);
             System.out.println("Deposit successful.");
@@ -60,7 +61,6 @@ public class WalletMenu {
 
     private void handleWithdraw() {
         try {
-            int studentId = readInt("Enter student ID: ");
             double amount = readDouble("Enter amount to withdraw: ");
             walletService.withdraw(studentId, amount);
             System.out.println("Withdrawal successful.");
@@ -72,16 +72,15 @@ public class WalletMenu {
 
     private void handleTransfer() {
         try {
-            int senderId = readInt("Enter your (sender) student ID: ");
             int pin = readInt("Enter your PIN to authorise this transfer: ");
-            if (!studentService.verifyPin(senderId, pin)) {
+            if (!studentService.verifyPin(studentId, pin)) {
                 System.out.println("Incorrect PIN. Transfer cancelled.");
-                FileLogger.logWarn("Transfer blocked — bad PIN for student " + senderId);
+                FileLogger.logWarn("Transfer blocked — bad PIN for student " + studentId);
                 return;
             }
             int receiverId = readInt("Enter receiver student ID: ");
             double amount = readDouble("Enter amount to transfer: ");
-            walletService.transfer(senderId, receiverId, amount);
+            walletService.transfer(studentId, receiverId, amount);
             System.out.println("Transfer successful.");
         } catch (InvalidAmountException | InsufficientBalanceException
                  | DailyTransferLimitException | WalletNotFoundException e) {
@@ -92,7 +91,6 @@ public class WalletMenu {
 
     private void handleBalance() {
         try {
-            int studentId = readInt("Enter student ID: ");
             double balance = walletService.getBalance(studentId);
             System.out.printf("Current balance: %.2f%n", balance);
         } catch (WalletNotFoundException e) {

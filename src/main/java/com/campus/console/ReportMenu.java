@@ -1,8 +1,8 @@
 package com.campus.console;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.campus.model.Transaction;
 import com.campus.model.TxnType;
@@ -12,85 +12,51 @@ public class ReportMenu {
 
     private final Scanner scanner;
     private final ReportService reportService;
+    private final int studentId;   // the logged-in user — reports are scoped to them
 
-    public ReportMenu(Scanner scanner) {
+    public ReportMenu(Scanner scanner, int studentId) {
         this.scanner = scanner;
         this.reportService = new ReportService();
+        this.studentId = studentId;
     }
 
     public void show() {
         boolean back = false;
         while (!back) {
             System.out.println();
-            System.out.println("===== Reports & Transaction History =====");
-            System.out.println("1. View all transaction history");
-            System.out.println("2. Top spenders");
-            System.out.println("3. Total spend by a student");
-            System.out.println("4. Monthly summary");
-            System.out.println("5. Filter transactions by type");
-            System.out.println("6. Transaction count by type");
+            System.out.println("===== My Reports & Transaction History =====");
+            System.out.println("1. My transaction history");
+            System.out.println("2. My total spend");
+            System.out.println("3. My transactions by type");
             System.out.println("0. Back");
             System.out.print("Choose an option: ");
 
             switch (scanner.nextLine().trim()) {
-                case "1" -> printTransactions(reportService.allTransactions());
-                case "2" -> showTopSpenders();
-                case "3" -> showSpendByStudent();
-                case "4" -> showMonthly();
-                case "5" -> showByType();
-                case "6" -> showCountByType();
+                case "1" -> printTransactions(reportService.historyForStudent(studentId));
+                case "2" -> showMySpend();
+                case "3" -> showByType();
                 case "0" -> back = true;
                 default  -> System.out.println("Invalid option, try again.");
             }
         }
     }
 
-    private void showTopSpenders() {
-        int n = readInt("How many top spenders? ");
-        List<Map.Entry<Integer, Double>> top = reportService.topSpenders(n);
-        if (top.isEmpty()) {
-            System.out.println("No spending recorded yet.");
-            return;
-        }
-        System.out.println("\nRank | Student | Total Spent");
-        int rank = 1;
-        for (Map.Entry<Integer, Double> e : top) {
-            System.out.printf("%-4d | %-7d | %.2f%n", rank++, e.getKey(), e.getValue());
-        }
-    }
-
-    private void showSpendByStudent() {
-        int id = readInt("Enter student ID: ");
-        System.out.printf("Student %d has spent a total of %.2f%n", id, reportService.totalSpendByStudent(id));
-    }
-
-    private void showMonthly() {
-        Map<String, Double> monthly = reportService.monthlySummary();
-        if (monthly.isEmpty()) {
-            System.out.println("No transactions yet.");
-            return;
-        }
-        System.out.println("\nMonth    | Total Amount");
-        monthly.forEach((m, total) -> System.out.printf("%-8s | %.2f%n", m, total));
+    private void showMySpend() {
+        System.out.printf("You have spent a total of %.2f%n", reportService.totalSpendByStudent(studentId));
     }
 
     private void showByType() {
         System.out.print("Enter type (TRANSFER/DEPOSIT/WITHDRAW/CAMPUS_PAYMENT/SPLIT_SETTLEMENT): ");
         String input = scanner.nextLine().trim().toUpperCase();
         try {
-            printTransactions(reportService.filterByType(TxnType.valueOf(input)));
+            TxnType type = TxnType.valueOf(input);
+            List<Transaction> mine = reportService.historyForStudent(studentId).stream()
+                    .filter(t -> t.getType() == type)
+                    .collect(Collectors.toList());
+            printTransactions(mine);
         } catch (IllegalArgumentException e) {
             System.out.println("Unknown type: " + input);
         }
-    }
-
-    private void showCountByType() {
-        Map<TxnType, Long> counts = reportService.countByType();
-        if (counts.isEmpty()) {
-            System.out.println("No transactions yet.");
-            return;
-        }
-        counts.forEach((type, count) -> System.out.printf("%-16s : %d%n", type, count));
     }
 
     private void printTransactions(List<Transaction> txns) {
@@ -107,16 +73,5 @@ public class ReportMenu {
                     t.getAmount(), t.getStatus(), t.getTimestamp());
         }
         System.out.println(txns.size() + " transaction(s).");
-    }
-
-    private int readInt(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            try {
-                return Integer.parseInt(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a whole number.");
-            }
-        }
     }
 }

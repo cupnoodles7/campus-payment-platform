@@ -10,20 +10,24 @@ import java.util.Scanner;
 public class StudentMenu {
 
     private final StudentService service = new StudentService();
-    private final Scanner sc = new Scanner(System.in);
+    private final Scanner sc;
+    private final int studentId;   // the logged-in user
+
+    public StudentMenu(Scanner sc, int studentId) {
+        this.sc = sc;
+        this.studentId = studentId;
+    }
 
     public void show() {
         while (true) {
             System.out.println("\n--- Student Menu ---");
-            // System.out.println("1. Register Student");
-            System.out.println("1. Update Student");
+            System.out.println("1. Update my profile");
             System.out.println("2. Search by ID");
             System.out.println("3. Display All");
             System.out.println("4. Back");
             System.out.print("Choice: ");
 
             switch (sc.nextLine().trim()) {
-                // case "1" -> register();
                 case "1" -> update();
                 case "2" -> search();
                 case "3" -> displayAll();
@@ -33,60 +37,37 @@ public class StudentMenu {
         }
     }
 
-    private void register() {
-        try {
-            System.out.print("Name: ");
-            String name = sc.nextLine().trim();
-
-            System.out.print("Email (Enter to skip): ");
-            String email = sc.nextLine().trim();
-
-            System.out.print("Phone (Enter to skip): ");
-            String phone = sc.nextLine().trim();
-
-            Student s = new Student();
-            s.setName(name);
-            s.setEmail(Optional.ofNullable(email.isEmpty() ? null : email));
-            s.setPhone(Optional.ofNullable(phone.isEmpty() ? null : phone));
-
-            int id = service.registerStudent(s);
-
-            System.out.println("\n Registration Successful!");
-            System.out.println(" Your Student ID : " + id);
-            System.out.println(" Save this ID — you will need it to login.");
-
-        } catch (InvalidAmountException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
     private void update() {
         try {
-            System.out.print("Student ID to update: ");
-            int id = Integer.parseInt(sc.nextLine().trim());
-
             System.out.print("New Name: ");
             String name = sc.nextLine().trim();
 
             System.out.print("New Email (Enter to skip): ");
             String email = sc.nextLine().trim();
 
-            System.out.print("New Phone (Enter to skip): ");
-            String phone = sc.nextLine().trim();
+            String phone = readRequired("New Phone: ");
 
             Student s = new Student();
-            s.setStudentId(id);
+            s.setStudentId(studentId);
             s.setName(name);
             s.setEmail(Optional.ofNullable(email.isEmpty() ? null : email));
-            s.setPhone(Optional.ofNullable(phone.isEmpty() ? null : phone));
+            s.setPhone(Optional.of(phone));
 
             service.updateStudent(s);
             System.out.println("Updated successfully.");
 
-        } catch (StudentNotFoundException | InvalidAmountException e) {
+        } catch (StudentNotFoundException | InvalidAmountException | DuplicateStudentException e) {
             System.out.println("Error: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID.");
+        }
+    }
+
+    // reads a non-empty value, re-prompting until something is entered
+    private String readRequired(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = sc.nextLine().trim();
+            if (!line.isEmpty()) return line;
+            System.out.println("This field is required.");
         }
     }
 

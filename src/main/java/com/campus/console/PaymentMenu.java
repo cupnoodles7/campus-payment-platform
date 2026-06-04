@@ -10,8 +10,12 @@ public class PaymentMenu {
 
     private final PaymentService paymentService = new PaymentService();
     private final Scanner sc;
+    private final int studentId;   // the logged-in user
 
-    public PaymentMenu(Scanner sc) { this.sc = sc; }
+    public PaymentMenu(Scanner sc, int studentId) {
+        this.sc = sc;
+        this.studentId = studentId;
+    }
 
     public void show() {
         boolean back = false;
@@ -52,11 +56,10 @@ public class PaymentMenu {
 
     private void handlePayment(String paymentType) {
         try {
-            int studentId = InputValidator.readInt(sc, "Student ID: ");
             double amount = InputValidator.readDouble(sc, "Amount: Rs.");
 
-            System.out.printf("Confirm %s payment of Rs.%.2f for student %d? (y/n): ",
-                              paymentType, amount, studentId);
+            System.out.printf("Confirm %s payment of Rs.%.2f? (y/n): ",
+                              paymentType, amount);
             String confirm = sc.nextLine().trim();
 
             if (!confirm.equalsIgnoreCase("y")) {

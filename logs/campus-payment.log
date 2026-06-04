@@ -238,3 +238,41 @@
 2026-06-04 15:16:05.833 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=9
 2026-06-04 15:16:06.282 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 9
 2026-06-04 15:16:46.564 [main] INFO  com.campus.util.FileLogger - listAll — found 0 total dues for payerId: 9
+2026-06-04 15:26:26.731 [main] WARN  com.campus.util.FileLogger - Login failed for Student ID: 9
+2026-06-04 15:33:04.252 [main] INFO  com.campus.util.FileLogger - Student inserted — generated ID: 4
+2026-06-04 15:33:04.496 [main] INFO  com.campus.util.FileLogger - Inserted wallet for studentId=4
+2026-06-04 15:33:04.741 [main] INFO  com.campus.util.FileLogger - Student registered — ID: 4, WalletID: 4
+2026-06-04 15:33:04.971 [main] INFO  com.campus.util.FileLogger - New student registered: 4
+2026-06-04 15:33:18.884 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=4
+2026-06-04 15:33:19.398 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 4
+2026-06-04 15:33:48.477 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=4
+2026-06-04 15:33:49.158 [main] INFO  com.campus.util.FileLogger - Updated balance of 4 to 1000.0
+2026-06-04 15:33:49.423 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=2811c7c8-8dd2-4fcd-ab02-cda87c1b3e25, senderId=4, receiverId=4, amount=1000.0, type=DEPOSIT, timestamp=2026-06-04T15:33:49.174690, status=SUCCESS, category=null)
+2026-06-04 15:34:03.631 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=4
+2026-06-04 15:35:02.213 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=3
+2026-06-04 15:35:17.362 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=4
+2026-06-04 15:35:20.128 [main] INFO  com.campus.util.FileLogger - Finding transactions between dates: 2026-06-04T00:00 to 2026-06-04T15:35:17.891765
+2026-06-04 15:35:23.932 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=4
+2026-06-04 15:35:26.533 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=3
+2026-06-04 15:35:27.295 [main] INFO  com.campus.util.FileLogger - Debited wallet of studentId=4 by 9.0
+2026-06-04 15:35:27.511 [main] INFO  com.campus.util.FileLogger - Credited wallet of studentId=3 by 9.0
+2026-06-04 15:35:27.522 [main] INFO  com.campus.util.FileLogger - Transferred 9.0 from 4 to 3
+2026-06-04 15:35:27.805 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=e1f8290b-d247-46d3-bc63-e5eae5f5afcd, senderId=4, receiverId=3, amount=9.0, type=TRANSFER, timestamp=2026-06-04T15:35:27.523671, status=SUCCESS, category=null)
+2026-06-04 15:36:06.819 [main] INFO  com.campus.util.FileLogger - Updated balance of 4 to 979.0
+2026-06-04 15:36:07.126 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=19e2c3e7-bef8-41cf-b6b0-3ab4275c8f9b, senderId=4, receiverId=0, amount=12.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T15:36:06.820650, status=SUCCESS, category=CANTEEN)
+2026-06-04 15:36:07.445 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=4 ₹12.0
+2026-06-04 15:36:48.110 [main] INFO  com.campus.util.FileLogger - Updated balance of 4 to 889.0
+2026-06-04 15:36:48.328 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=dbec83be-e261-4299-b466-717cfceae875, senderId=4, receiverId=0, amount=90.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T15:36:48.111288, status=SUCCESS, category=HOSTEL)
+2026-06-04 15:36:48.545 [main] INFO  com.campus.util.FileLogger - HOSTEL payment SUCCESS: student=4 ₹90.0
+2026-06-04 15:37:03.241 [main] INFO  com.campus.util.FileLogger - Updated balance of 4 to 879.0
+2026-06-04 15:37:03.549 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=454350eb-4d4c-45a8-bff3-127c9e6feab9, senderId=4, receiverId=0, amount=10.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T15:37:03.242027, status=SUCCESS, category=CANTEEN)
+2026-06-04 15:37:03.859 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=4 ₹10.0
+2026-06-04 15:44:55.318 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=4
+2026-06-04 15:45:31.155 [main] INFO  com.campus.util.FileLogger - Finding all transactions.
+2026-06-04 15:51:27.738 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=4
+2026-06-04 15:51:28.312 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 4
+2026-06-04 15:51:43.381 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=4
+2026-06-04 15:51:52.842 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=4
+2026-06-04 15:52:13.480 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=4
+2026-06-04 15:52:21.275 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=4
+2026-06-04 15:52:28.122 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=4

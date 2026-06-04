@@ -1,6 +1,7 @@
 package com.campus.console;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class ReportMenu {
             System.out.println("2. My total spend");
             System.out.println("3. My transactions by type");
             System.out.println("4. My spend by campus-payment category");
+            System.out.println("5. My top spends");
             System.out.println("0. Back");
             System.out.print("Choose an option: ");
 
@@ -37,6 +39,7 @@ public class ReportMenu {
                 case "2" -> showMySpend();
                 case "3" -> showByType();
                 case "4" -> showByCategory();
+                case "5" -> printTransactions(reportService.topSpendsForStudent(studentId));
                 case "0" -> back = true;
                 default  -> System.out.println("Invalid option, try again.");
             }
@@ -62,7 +65,7 @@ public class ReportMenu {
     }
 
     private void showByCategory() {
-        var byCategory = reportService.spendByCategory(studentId);
+        Map<String, Double> byCategory = reportService.spendByCategory(studentId);
         if (byCategory.isEmpty()) {
             System.out.println("No campus payments yet.");
             return;

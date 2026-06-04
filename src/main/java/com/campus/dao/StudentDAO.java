@@ -52,28 +52,6 @@ public class StudentDAO {
         }
     }
 
-    // links wallet_id back to student row after wallet is created
-    public void updateWalletId(int studentId, int walletId) {
-        try (Connection conn = DBConnection.getConnection()) {
-            updateWalletId(studentId, walletId, conn);
-        } catch (SQLException e) {
-            throw new DatabaseException("Failed to link walletId: " + e.getMessage(), e);
-        }
-    }
-
-    // transactional variant — runs on the caller's connection (NOT closed here)
-    public void updateWalletId(int studentId, int walletId, Connection conn) {
-        String sql = "UPDATE students SET wallet_id=? WHERE student_id=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, walletId);
-            ps.setInt(2, studentId);
-            ps.executeUpdate();
-            FileLogger.logInfo("WalletId " + walletId + " linked to studentId: " + studentId);
-        } catch (SQLException e) {
-            throw new DatabaseException("Failed to link walletId: " + e.getMessage(), e);
-        }
-    }
-
     public void update(Student s) {
         String sql = "UPDATE students SET name=?, email=?, phone=? WHERE student_id=?";
         try (Connection conn = DBConnection.getConnection();

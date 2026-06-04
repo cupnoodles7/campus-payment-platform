@@ -12,16 +12,9 @@ import com.campus.model.TxnType;
 public class FraudDetector {
 
     // A student making more than this many outgoing transactions inside the window is suspicious.
-    private static final int MAX_OUTGOING = 5;
+    private static final int MAX_OUTGOING = 10;
     private static final int WINDOW_MINUTES = 5;
-
-    /**
-     * Flags a student as suspicious when they have made more than
-     * {@value #MAX_OUTGOING} outgoing transactions within the last
-     * {@value #WINDOW_MINUTES} minutes. "Outgoing" means money leaving the
-     * student's wallet — transfers, withdrawals, campus payments and split
-     * settlements — i.e. every type except DEPOSIT.
-     */
+    
     /**
      * Blocks an outgoing transaction when the student has already reached the
      * limit ({@value #MAX_OUTGOING} outgoing transactions within the last

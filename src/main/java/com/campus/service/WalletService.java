@@ -65,7 +65,7 @@ public class WalletService implements TransferHandler {
             txnDAO.insert(new Transaction(
                 UUID.randomUUID().toString(),
                 senderId, receiverId, amt,
-                type, LocalDateTime.now(), "SUCCESS"
+                type, LocalDateTime.now(), "SUCCESS", null
             ), conn);
 
             conn.commit();
@@ -107,7 +107,7 @@ public class WalletService implements TransferHandler {
             txnDAO.insert(new Transaction(
                 UUID.randomUUID().toString(),
                 studentId, studentId, amt,
-                TxnType.DEPOSIT, LocalDateTime.now(), "SUCCESS"
+                TxnType.DEPOSIT, LocalDateTime.now(), "SUCCESS", null
             ), conn);
 
             conn.commit();
@@ -141,7 +141,7 @@ public class WalletService implements TransferHandler {
             txnDAO.insert(new Transaction(
                 UUID.randomUUID().toString(),
                 studentId, studentId, amt,
-                TxnType.WITHDRAW, LocalDateTime.now(), "SUCCESS"
+                TxnType.WITHDRAW, LocalDateTime.now(), "SUCCESS", null
             ), conn);
             FileLogger.logInfo("Withdrew " + amt + " from studentId=" + studentId);
             conn.commit();

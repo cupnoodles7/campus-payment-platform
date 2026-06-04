@@ -6,3 +6,232 @@
 2026-06-04 11:10:21.952 [main] INFO  com.campus.util.FileLogger - Student updated — ID: 1
 2026-06-04 11:10:21.954 [main] INFO  com.campus.util.FileLogger - Student updated — ID: 1
 2026-06-04 11:12:24.892 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=1
+2026-06-04 12:47:19.570 [main] INFO  com.campus.util.FileLogger - Student inserted — generated ID: 5
+2026-06-04 12:47:19.844 [main] INFO  com.campus.util.FileLogger - Inserted wallet for studentId=5
+2026-06-04 12:47:20.070 [main] INFO  com.campus.util.FileLogger - WalletId 5 linked to studentId: 5
+2026-06-04 12:47:20.293 [main] INFO  com.campus.util.FileLogger - Student registered — ID: 5, WalletID: 5
+2026-06-04 12:47:20.510 [main] INFO  com.campus.util.FileLogger - New student registered: 5
+2026-06-04 12:47:55.117 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 12:47:55.681 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 5
+2026-06-04 12:48:06.026 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 12:48:06.744 [main] WARN  com.campus.util.FileLogger - Deposit failed: Deposit exceeds balance cap
+2026-06-04 12:48:14.523 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 12:48:15.374 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 1.0
+2026-06-04 12:48:15.673 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=ac67d568-f8ab-4818-84cd-6524763225e6, senderId=5, receiverId=5, amount=1.0, type=DEPOSIT, timestamp=2026-06-04T12:48:15.380282, status=SUCCESS)
+2026-06-04 12:48:40.328 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 12:48:41.252 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 2.0
+2026-06-04 12:48:41.556 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=b96a6639-4128-4868-afd0-9cfb55be59e8, senderId=5, receiverId=5, amount=1.0, type=DEPOSIT, timestamp=2026-06-04T12:48:41.253984, status=SUCCESS)
+2026-06-04 12:48:53.062 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 12:48:53.732 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 4002.0
+2026-06-04 12:48:53.946 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=6c77d60b-fc73-4799-98f0-a942f6fed0e7, senderId=5, receiverId=5, amount=4000.0, type=DEPOSIT, timestamp=2026-06-04T12:48:53.735625, status=SUCCESS)
+2026-06-04 12:49:09.428 [main] WARN  com.campus.util.FileLogger - CANTEEN payment rejected: Insufficient balance. Available: ₹4002.0
+2026-06-04 12:49:22.409 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3703.0
+2026-06-04 12:49:22.728 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=b05f116b-e10e-463c-bbd1-3c82542070a8, senderId=5, receiverId=0, amount=299.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:49:22.414432, status=SUCCESS)
+2026-06-04 12:49:23.040 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹299.0
+2026-06-04 12:49:32.454 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3696.0
+2026-06-04 12:49:32.673 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=649a8ce2-5435-4f02-916e-63ca867f3603, senderId=5, receiverId=0, amount=7.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:49:32.455193, status=SUCCESS)
+2026-06-04 12:49:32.889 [main] INFO  com.campus.util.FileLogger - HACKATHON payment SUCCESS: student=5 ₹7.0
+2026-06-04 12:49:41.566 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3608.0
+2026-06-04 12:49:41.977 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=22546cf7-f563-48da-92f8-341724cf8ac7, senderId=5, receiverId=0, amount=88.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:49:41.573310, status=SUCCESS)
+2026-06-04 12:49:42.283 [main] INFO  com.campus.util.FileLogger - LIBRARY payment SUCCESS: student=5 ₹88.0
+2026-06-04 12:49:49.101 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3586.0
+2026-06-04 12:49:49.350 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=3ecd927c-a7ae-46d8-a2ac-77312dcab390, senderId=5, receiverId=0, amount=22.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:49:49.101965, status=SUCCESS)
+2026-06-04 12:49:49.657 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹22.0
+2026-06-04 12:50:00.939 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3584.0
+2026-06-04 12:50:01.162 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=3aba41cd-7d0c-4a66-b1eb-29dec3a2468e, senderId=5, receiverId=0, amount=2.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:00.941202, status=SUCCESS)
+2026-06-04 12:50:01.432 [main] INFO  com.campus.util.FileLogger - HOSTEL payment SUCCESS: student=5 ₹2.0
+2026-06-04 12:50:09.475 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3578.0
+2026-06-04 12:50:09.734 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=0338f36b-d4c9-4e69-8355-77492846dd7d, senderId=5, receiverId=0, amount=6.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:09.476387, status=SUCCESS)
+2026-06-04 12:50:10.035 [main] INFO  com.campus.util.FileLogger - LIBRARY payment SUCCESS: student=5 ₹6.0
+2026-06-04 12:50:17.511 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3577.0
+2026-06-04 12:50:17.920 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=1f8a6815-eee2-49ef-9a53-e7d5d1a9a0c2, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:17.513092, status=SUCCESS)
+2026-06-04 12:50:18.226 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:50:24.328 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3576.0
+2026-06-04 12:50:24.577 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=16f67a6a-10f5-49d6-835f-ace04b050046, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:24.331802, status=SUCCESS)
+2026-06-04 12:50:24.885 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:50:31.447 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3575.0
+2026-06-04 12:50:31.744 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=dad6a4cf-680d-4972-bcdb-c08d4e0b5307, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:31.450633, status=SUCCESS)
+2026-06-04 12:50:32.015 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:50:37.914 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3574.0
+2026-06-04 12:50:38.196 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=61ad6fa7-5826-485d-94b5-dc9f1eb38d1a, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:37.915272, status=SUCCESS)
+2026-06-04 12:50:38.502 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:50:44.686 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3573.0
+2026-06-04 12:50:44.954 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=91a5a836-633c-4d35-892b-d5b98dd54cb1, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:44.687921, status=SUCCESS)
+2026-06-04 12:50:45.466 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:50:52.503 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3572.0
+2026-06-04 12:50:52.743 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=c0b52fe5-582c-4983-8f01-872f471e8c9c, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:50:52.504331, status=SUCCESS)
+2026-06-04 12:50:52.967 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:54:06.465 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 12:54:07.102 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 5
+2026-06-04 12:54:16.941 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3571.0
+2026-06-04 12:54:17.196 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=8e28aadf-af16-4df1-b1c9-8f29cd3e650a, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:54:16.947754, status=SUCCESS)
+2026-06-04 12:54:17.762 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:54:19.900 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:54:24.734 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3570.0
+2026-06-04 12:54:24.972 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=997407f1-20e2-48c0-8b06-2563487d54c6, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:54:24.735734, status=SUCCESS)
+2026-06-04 12:54:25.196 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:54:27.623 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:54:34.753 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3569.0
+2026-06-04 12:54:35.056 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=207985b0-4206-483d-ad05-dd0d62e0e791, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:54:34.754316, status=SUCCESS)
+2026-06-04 12:54:35.279 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:54:37.732 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:54:49.604 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3568.0
+2026-06-04 12:54:49.829 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=f13f5f5c-a020-40f5-815c-690dde02f297, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:54:49.605112, status=SUCCESS)
+2026-06-04 12:54:50.107 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:54:53.692 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:55:04.877 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3567.0
+2026-06-04 12:55:05.095 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=d1d700e8-47e8-4e52-98c9-8fcc6df043f9, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:55:04.878630, status=SUCCESS)
+2026-06-04 12:55:05.314 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:55:07.721 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:55:13.455 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3566.0
+2026-06-04 12:55:13.760 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=79c7ad42-fd3b-4b3e-a6a3-8886db870240, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:55:13.456947, status=SUCCESS)
+2026-06-04 12:55:14.170 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:55:16.574 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:55:23.387 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3565.0
+2026-06-04 12:55:23.741 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=bb7bfc32-58c9-44b4-b5ef-d98373f02055, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:55:23.391794, status=SUCCESS)
+2026-06-04 12:55:23.982 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:55:26.414 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:55:30.557 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3564.0
+2026-06-04 12:55:30.864 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=036fb4e1-48e7-4ff3-b270-06546c781848, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:55:30.557928, status=SUCCESS)
+2026-06-04 12:55:31.169 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:55:33.821 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:55:38.652 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3563.0
+2026-06-04 12:55:38.953 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=2989c47e-52d3-449e-941e-3ab94e69caf7, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:55:38.654951, status=SUCCESS)
+2026-06-04 12:55:39.170 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:55:41.822 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:55:46.852 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3562.0
+2026-06-04 12:55:47.147 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=c81fef01-def1-4982-b5ed-204808983872, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:55:46.854577, status=SUCCESS)
+2026-06-04 12:55:47.453 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:55:50.978 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:55:55.644 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3561.0
+2026-06-04 12:55:55.960 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=63566296-4bae-4dca-a1ee-b4508052351b, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:55:55.646407, status=SUCCESS)
+2026-06-04 12:55:56.259 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:55:58.716 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:56:03.336 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3560.0
+2026-06-04 12:56:03.631 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=fcfc697d-b6f8-4524-9748-1ec52ce2c0f8, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:56:03.338008, status=SUCCESS)
+2026-06-04 12:56:03.847 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:56:06.196 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:56:14.078 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3559.0
+2026-06-04 12:56:14.387 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=ed0d3374-37a6-4662-ad19-b94b2cd52037, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:56:14.079607, status=SUCCESS)
+2026-06-04 12:56:14.691 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:56:16.967 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:56:31.417 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3558.0
+2026-06-04 12:56:31.690 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=723b1e04-1b40-4dda-85c8-8d76d87c032f, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:56:31.418733, status=SUCCESS)
+2026-06-04 12:56:31.996 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:56:34.661 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:56:40.541 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3557.0
+2026-06-04 12:56:41.692 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=feb0ed85-d7e8-4eef-a417-a3d2f533e48a, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:56:40.542213, status=SUCCESS)
+2026-06-04 12:56:41.912 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:56:44.492 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:56:51.517 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3556.0
+2026-06-04 12:56:51.738 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=44760bb7-371d-4408-9fd8-c183610bd823, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:56:51.520991, status=SUCCESS)
+2026-06-04 12:56:51.966 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:56:54.002 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:57:00.901 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3555.0
+2026-06-04 12:57:01.182 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=2f2cb640-ddbc-4f4c-9ab9-d6fdcac3de6e, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:57:00.902849, status=SUCCESS)
+2026-06-04 12:57:01.495 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:57:04.359 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:57:09.497 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3554.0
+2026-06-04 12:57:09.726 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=480d01ba-87b7-48dc-bbee-6287863d59a6, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:57:09.498506, status=SUCCESS)
+2026-06-04 12:57:09.951 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:57:12.343 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:57:20.437 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3553.0
+2026-06-04 12:57:20.741 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=d4787f23-510c-49fa-bff8-d14e51666f54, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:57:20.437952, status=SUCCESS)
+2026-06-04 12:57:21.048 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:57:23.320 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:57:28.834 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3552.0
+2026-06-04 12:57:29.182 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=a2a1fd35-145f-4c27-92ea-df2983f7f574, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:57:28.835235, status=SUCCESS)
+2026-06-04 12:57:29.445 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:57:32.005 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 12:57:37.842 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3551.0
+2026-06-04 12:57:38.149 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=b8c56c6e-fb23-4449-9f3c-2019778c567d, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T12:57:37.843861, status=SUCCESS)
+2026-06-04 12:57:38.474 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 12:57:41.252 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 10 outgoing transactions within 5 minutes
+2026-06-04 13:02:37.228 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 13:02:37.886 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 5
+2026-06-04 13:02:59.136 [main] WARN  com.campus.util.FileLogger - Transfer blocked — bad PIN for student 5
+2026-06-04 13:03:44.649 [main] WARN  com.campus.util.FileLogger - Transfer blocked — bad PIN for student 5
+2026-06-04 13:04:43.532 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 13:04:46.228 [main] INFO  com.campus.util.FileLogger - Finding transactions between dates: 2026-06-04T00:00 to 2026-06-04T13:04:44.041889
+2026-06-04 13:04:52.336 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 13:04:55.317 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=9000
+2026-06-04 13:04:56.127 [main] WARN  com.campus.util.FileLogger - Transfer failed: Wallet not found: 9000
+2026-06-04 13:05:23.568 [main] WARN  com.campus.util.FileLogger - Transfer blocked — bad PIN for student 5
+2026-06-04 13:06:29.689 [main] WARN  com.campus.util.FileLogger - Login failed for Student ID: 123
+2026-06-04 13:06:40.127 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 13:06:40.581 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 5
+2026-06-04 13:06:55.126 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3550.0
+2026-06-04 13:06:55.449 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=1b120299-5baf-4f29-bcc0-fe81069c8012, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:06:55.131727, status=SUCCESS)
+2026-06-04 13:06:55.740 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:07:07.529 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3549.0
+2026-06-04 13:07:08.427 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=2a64e210-c3fa-495f-8793-2271f0dccc5f, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:07:07.529754, status=SUCCESS)
+2026-06-04 13:07:08.736 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:07:16.794 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3548.0
+2026-06-04 13:07:17.028 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=57fe858b-a552-48c0-abe0-803178e4cee8, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:07:16.795174, status=SUCCESS)
+2026-06-04 13:07:17.310 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:07:24.432 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3547.0
+2026-06-04 13:07:24.656 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=c0de9872-856b-426d-bb49-9c4e2f221a48, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:07:24.433089, status=SUCCESS)
+2026-06-04 13:07:24.913 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:07:32.087 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3546.0
+2026-06-04 13:07:32.392 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=144f023b-d5dc-427d-8d1a-10418716425f, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:07:32.087971, status=SUCCESS)
+2026-06-04 13:07:32.696 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:07:41.421 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3545.0
+2026-06-04 13:07:41.638 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=b828e970-0f4a-46fc-9277-5d1b91dcffc5, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:07:41.422153, status=SUCCESS)
+2026-06-04 13:07:41.851 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:07:44.386 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 5 outgoing transactions within 5 minutes
+2026-06-04 13:07:49.388 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3544.0
+2026-06-04 13:07:49.694 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=966e5e9e-ea60-4305-9d9c-cd7510b73866, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:07:49.392623, status=SUCCESS)
+2026-06-04 13:07:50.002 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:07:52.676 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 5 outgoing transactions within 5 minutes
+2026-06-04 13:07:59.935 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3543.0
+2026-06-04 13:08:00.243 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=c8b4c7ed-35fd-46f8-b704-65851e04cd3e, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:07:59.936140, status=SUCCESS)
+2026-06-04 13:08:00.464 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:08:03.212 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 5 outgoing transactions within 5 minutes
+2026-06-04 13:08:24.546 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 13:08:25.003 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 5
+2026-06-04 13:09:07.731 [main] WARN  com.campus.util.FileLogger - Transfer failed: Student ID 988 not found.
+2026-06-04 13:21:41.574 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=5
+2026-06-04 13:21:42.212 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 5
+2026-06-04 13:22:02.294 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3542.0
+2026-06-04 13:22:02.612 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=4c19824f-1b94-46a2-86fe-c069d414304f, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:22:02.299523, status=SUCCESS)
+2026-06-04 13:22:02.904 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:22:17.580 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3541.0
+2026-06-04 13:22:17.797 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=75f4920c-29a1-41f3-be3a-61850a9235b7, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:22:17.580875, status=SUCCESS)
+2026-06-04 13:22:18.049 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:22:34.440 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3540.0
+2026-06-04 13:22:34.663 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=7783b462-e7b4-437c-858f-b6cab25218cf, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:22:34.441734, status=SUCCESS)
+2026-06-04 13:22:34.885 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:22:49.588 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3539.0
+2026-06-04 13:22:49.897 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=078c7201-3675-473e-b31c-18d53aef4f32, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:22:49.589661, status=SUCCESS)
+2026-06-04 13:22:50.206 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:23:00.552 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3538.0
+2026-06-04 13:23:00.854 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=1eff2e65-ee09-4652-8a31-186991231728, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:23:00.555863, status=SUCCESS)
+2026-06-04 13:23:01.161 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:23:11.338 [main] INFO  com.campus.util.FileLogger - Updated balance of 5 to 3537.0
+2026-06-04 13:23:11.606 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=979a955b-e1ef-499d-b269-85d8c2d090b9, senderId=5, receiverId=0, amount=1.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T13:23:11.341568, status=SUCCESS)
+2026-06-04 13:23:11.912 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=5 ₹1.0
+2026-06-04 13:23:14.493 [main] ERROR com.campus.util.FileLogger - SUSPICIOUS: studentId=5 made more than 5 outgoing transactions within 5 minutes
+2026-06-04 15:00:22.910 [main] INFO  com.campus.util.FileLogger - Student inserted — generated ID: 9
+2026-06-04 15:00:23.262 [main] INFO  com.campus.util.FileLogger - Inserted wallet for studentId=9
+2026-06-04 15:00:23.571 [main] INFO  com.campus.util.FileLogger - Student registered — ID: 9, WalletID: 9
+2026-06-04 15:00:23.799 [main] INFO  com.campus.util.FileLogger - New student registered: 9
+2026-06-04 15:00:50.277 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=9
+2026-06-04 15:00:50.820 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 9
+2026-06-04 15:01:07.754 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=9
+2026-06-04 15:01:09.076 [main] INFO  com.campus.util.FileLogger - Updated balance of 9 to 800.0
+2026-06-04 15:01:09.362 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=190ec321-c64a-4830-8f81-8cab4c24c370, senderId=9, receiverId=9, amount=800.0, type=DEPOSIT, timestamp=2026-06-04T15:01:09.093020, status=SUCCESS, category=null)
+2026-06-04 15:01:59.014 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=2
+2026-06-04 15:02:06.069 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=9
+2026-06-04 15:02:08.637 [main] INFO  com.campus.util.FileLogger - Finding transactions between dates: 2026-06-04T00:00 to 2026-06-04T15:02:06.682464
+2026-06-04 15:02:12.624 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=9
+2026-06-04 15:02:15.182 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=2
+2026-06-04 15:02:15.900 [main] INFO  com.campus.util.FileLogger - Debited wallet of studentId=9 by 12.0
+2026-06-04 15:02:16.122 [main] INFO  com.campus.util.FileLogger - Credited wallet of studentId=2 by 12.0
+2026-06-04 15:02:16.132 [main] INFO  com.campus.util.FileLogger - Transferred 12.0 from 9 to 2
+2026-06-04 15:02:16.410 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=ed10417f-382f-4e7b-ab94-b77d017dc239, senderId=9, receiverId=2, amount=12.0, type=TRANSFER, timestamp=2026-06-04T15:02:16.132768, status=SUCCESS, category=null)
+2026-06-04 15:02:38.734 [main] INFO  com.campus.util.FileLogger - Updated balance of 9 to 771.0
+2026-06-04 15:02:38.958 [main] INFO  com.campus.util.FileLogger - Inserted transaction: Transaction(txnId=778698e4-610c-4a97-be72-ec8a6ef5701a, senderId=9, receiverId=0, amount=17.0, type=CAMPUS_PAYMENT, timestamp=2026-06-04T15:02:38.735272, status=SUCCESS, category=CANTEEN)
+2026-06-04 15:02:39.193 [main] INFO  com.campus.util.FileLogger - CANTEEN payment SUCCESS: student=9 ₹17.0
+2026-06-04 15:02:55.582 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=9
+2026-06-04 15:03:10.050 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=9
+2026-06-04 15:03:28.716 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=9

@@ -28,6 +28,7 @@ public class ReportMenu {
             System.out.println("1. My transaction history");
             System.out.println("2. My total spend");
             System.out.println("3. My transactions by type");
+            System.out.println("4. My spend by campus-payment category");
             System.out.println("0. Back");
             System.out.print("Choose an option: ");
 
@@ -35,6 +36,7 @@ public class ReportMenu {
                 case "1" -> printTransactions(reportService.historyForStudent(studentId));
                 case "2" -> showMySpend();
                 case "3" -> showByType();
+                case "4" -> showByCategory();
                 case "0" -> back = true;
                 default  -> System.out.println("Invalid option, try again.");
             }
@@ -57,6 +59,16 @@ public class ReportMenu {
         } catch (IllegalArgumentException e) {
             System.out.println("Unknown type: " + input);
         }
+    }
+
+    private void showByCategory() {
+        var byCategory = reportService.spendByCategory(studentId);
+        if (byCategory.isEmpty()) {
+            System.out.println("No campus payments yet.");
+            return;
+        }
+        System.out.println("\nMy spend by campus-payment category:");
+        byCategory.forEach((category, total) -> System.out.printf("  %-12s %.2f%n", category, total));
     }
 
     private void printTransactions(List<Transaction> txns) {

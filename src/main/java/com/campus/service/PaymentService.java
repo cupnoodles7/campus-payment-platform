@@ -69,7 +69,7 @@ public class PaymentService {
             Transaction txn = new Transaction(
                 UUID.randomUUID().toString(),
                 studentId, 0, amount,
-                type, LocalDateTime.now(), "SUCCESS"
+                type, LocalDateTime.now(), "SUCCESS", label
             );
             txnDAO.insert(txn, conn);
 

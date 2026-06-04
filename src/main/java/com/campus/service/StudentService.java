@@ -37,12 +37,10 @@ public class StudentService {
             // step 1 — SQL auto generates student_id
             int generatedStudentId = studentDAO.insert(s, conn);
 
-            // step 2 — create wallet using generated student_id, get generated wallet_id back
+            // step 2 — create the linked wallet. The 1:1 link lives on wallets.student_id;
+            // no back-reference is stored on the student row.
             int walletId = walletDAO.insert(
                     new Wallet(0, generatedStudentId, 0.0, 5000.0, 20000.0, 0.0), conn);
-
-            // step 3 — link wallet_id into student row
-            studentDAO.updateWalletId(generatedStudentId, walletId, conn);
 
             conn.commit();
             FileLogger.logInfo("Student registered — ID: " + generatedStudentId +

@@ -16,7 +16,7 @@ import com.campus.util.FileLogger;
 public class TransactionDAO {
 
     public void insert(Transaction txn, Connection conn) {
-        String sql = "INSERT INTO transactions " + "(txn_id, sender_id, receiver_id, amount, type, timestamp, status) " + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO transactions " + "(txn_id, sender_id, receiver_id, amount, type, timestamp, status, category) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, txn.getTxnId());
             ps.setInt   (2, txn.getSenderId());
@@ -25,6 +25,7 @@ public class TransactionDAO {
             ps.setString(5, txn.getType().name());
             ps.setTimestamp(6, Timestamp.valueOf(txn.getTimestamp()));
             ps.setString(7, txn.getStatus());
+            ps.setString(8, txn.getCategory());
             ps.executeUpdate();
             FileLogger.logInfo("Inserted transaction: " + txn);
         } catch (SQLException e) {
@@ -108,7 +109,8 @@ public class TransactionDAO {
             rs.getDouble("amount"),
             TxnType.valueOf(rs.getString("type")),
             rs.getTimestamp("timestamp").toLocalDateTime(),
-            rs.getString("status")
+            rs.getString("status"),
+            rs.getString("category")
         );
     }
 }

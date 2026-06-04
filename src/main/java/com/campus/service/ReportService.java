@@ -62,6 +62,17 @@ public class ReportService {
                 .collect(Collectors.toList());
     }
 
+    //Total campus-payment spend per category (CANTEEN, LIBRARY, ...) for one student
+    public Map<String, Double> spendByCategory(int studentId) {
+        return txnDAO.findByStudentId(studentId).stream()
+                .filter(t -> t.getType() == TxnType.CAMPUS_PAYMENT)
+                .filter(t -> t.getCategory() != null)
+                .filter(t -> t.getSenderId() == studentId)
+                .collect(Collectors.groupingBy(
+                        Transaction::getCategory,
+                        Collectors.summingDouble(Transaction::getAmount)));
+    }
+
     //Total transaction amount per month
     public Map<String, Double> monthlySummary() {
         DateTimeFormatter ym = DateTimeFormatter.ofPattern("yyyy-MM");

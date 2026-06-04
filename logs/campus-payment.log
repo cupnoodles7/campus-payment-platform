@@ -235,3 +235,6 @@
 2026-06-04 15:02:55.582 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=9
 2026-06-04 15:03:10.050 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=9
 2026-06-04 15:03:28.716 [main] INFO  com.campus.util.FileLogger - Finding transactions for studentId=9
+2026-06-04 15:16:05.833 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=9
+2026-06-04 15:16:06.282 [main] INFO  com.campus.util.FileLogger - Student logged in — ID: 9
+2026-06-04 15:16:46.564 [main] INFO  com.campus.util.FileLogger - listAll — found 0 total dues for payerId: 9

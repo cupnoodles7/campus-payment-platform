@@ -4,12 +4,14 @@ package com.campus.console;
 
 import com.campus.exception.DailyTransferLimitException;
 import com.campus.exception.DatabaseException;
+import com.campus.exception.InputCancelledException;
 import com.campus.exception.InsufficientBalanceException;
 import com.campus.exception.InvalidAmountException;
 import com.campus.exception.SplitExpenseException;
 import com.campus.exception.WalletNotFoundException;
 import com.campus.model.SplitExpense;
 import com.campus.service.SplitExpenseService;
+import com.campus.util.InputValidator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,15 +46,19 @@ public class SplitMenu {
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine().trim();
-            switch (choice) {
-                case "1" -> handleEqualSplit();
-                case "2" -> handleUnequalSplit();
-                case "3" -> handleSettleUp();
-                case "4" -> handleSettleAll();
-                case "5" -> handleListPending();
-                case "6" -> handleListAll();
-                case "0" -> back = true;
-                default  -> System.out.println("Invalid option, try again.");
+            try {
+                switch (choice) {
+                    case "1" -> handleEqualSplit();
+                    case "2" -> handleUnequalSplit();
+                    case "3" -> handleSettleUp();
+                    case "4" -> handleSettleAll();
+                    case "5" -> handleListPending();
+                    case "6" -> handleListAll();
+                    case "0" -> back = true;
+                    default  -> System.out.println("Invalid option, try again.");
+                }
+            } catch (InputCancelledException e) {
+                System.out.println("Cancelled — back to the split menu.");
             }
         }
     }
@@ -62,15 +68,15 @@ public class SplitMenu {
         while (true) {
             try {
                 int paidBy = studentId;
-                int memberCount = readInt("Enter number of people who owe (excluding yourself): ");
+                int memberCount = InputValidator.readInt(scanner, "Enter number of people who owe (excluding yourself): ");
 
                 List<Integer> members = new ArrayList<>();
                 for (int i = 1; i <= memberCount; i++) {
-                    int memberId = readInt("Enter student ID for member " + i + ": ");
+                    int memberId = InputValidator.readInt(scanner, "Enter student ID for member " + i + ": ");
                     members.add(memberId);
                 }
 
-                double totalAmount = readDouble("Enter total amount spent: ");
+                double totalAmount = InputValidator.readDouble(scanner, "Enter total amount spent: ");
 
                 String expenseId = splitExpenseService.createSplit(paidBy, members, totalAmount);
                 System.out.println("Equal split created successfully.");
@@ -96,19 +102,19 @@ public class SplitMenu {
         while (true) {
             try {
                 int paidBy = studentId;
-                int memberCount = readInt("Enter number of people who owe (excluding yourself): ");
+                int memberCount = InputValidator.readInt(scanner, "Enter number of people who owe (excluding yourself): ");
 
                 List<Integer> members = new ArrayList<>();
                 Map<Integer, Double> owedAmounts = new HashMap<>();
 
                 for (int i = 1; i <= memberCount; i++) {
-                    int memberId = readInt("Enter student ID for member " + i + ": ");
-                    double amount = readDouble("Enter amount owed by member " + memberId + ": ");
+                    int memberId = InputValidator.readInt(scanner, "Enter student ID for member " + i + ": ");
+                    double amount = InputValidator.readDouble(scanner, "Enter amount owed by member " + memberId + ": ");
                     members.add(memberId);
                     owedAmounts.put(memberId, amount);
                 }
 
-                double totalAmount = readDouble("Enter total amount spent: ");
+                double totalAmount = InputValidator.readDouble(scanner, "Enter total amount spent: ");
 
                 String expenseId = splitExpenseService.createUnequalSplit(
                     paidBy, members, totalAmount, owedAmounts);
@@ -133,7 +139,7 @@ public class SplitMenu {
     private void handleSettleUp() {
         try {
             int payerId = studentId;
-            int dueId   = readInt("Enter due ID to settle: ");
+            int dueId   = InputValidator.readInt(scanner, "Enter due ID to settle: ");
             splitExpenseService.settleUp(dueId, payerId);
             System.out.println("Due settled successfully.");
         } catch (SplitExpenseException | InsufficientBalanceException
@@ -219,28 +225,4 @@ public class SplitMenu {
         System.out.println("--------------------------------------------");
     }
 
-    // ── Input helpers ─────────────────────────────────────────
-    private int readInt(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String line = scanner.nextLine().trim();
-            try {
-                return Integer.parseInt(line);
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a whole number.");
-            }
-        }
-    }
-
-    private double readDouble(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String line = scanner.nextLine().trim();
-            try {
-                return Double.parseDouble(line);
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
-            }
-        }
-    }
 }

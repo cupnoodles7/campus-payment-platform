@@ -50,7 +50,11 @@ public class PaymentMenu {
                 continue;
             }
 
-            handlePayment(paymentType);
+            try {
+                handlePayment(paymentType);
+            } catch (InputCancelledException e) {
+                System.out.println("Cancelled — back to the payments menu.");
+            }
         }
     }
 

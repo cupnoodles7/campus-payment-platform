@@ -28,12 +28,16 @@ public class StudentMenu {
             System.out.println("3. Back");
             System.out.print("Choice: ");
 
-            switch (sc.nextLine().trim()) {
-                case "1" -> update();
-                case "2" -> search();
-                // case "3" -> displayAll();
-                case "3" -> { return; }
-                default  -> System.out.println("Invalid choice.");
+            try {
+                switch (sc.nextLine().trim()) {
+                    case "1" -> update();
+                    case "2" -> search();
+                    // case "3" -> displayAll();
+                    case "3" -> { return; }
+                    default  -> System.out.println("Invalid choice.");
+                }
+            } catch (InputCancelledException e) {
+                System.out.println("Cancelled — back to the student menu.");
             }
         }
     }

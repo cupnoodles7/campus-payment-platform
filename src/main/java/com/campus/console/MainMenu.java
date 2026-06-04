@@ -1,15 +1,15 @@
 package com.campus.console;
-import java.util.Optional;
-import java.util.Scanner;
-
+import com.campus.exception.InvalidAmountException;
 import com.campus.exception.DatabaseException;
 import com.campus.exception.DuplicateStudentException;
-import com.campus.exception.InvalidAmountException;
 import com.campus.model.Student;
 import com.campus.service.StudentService;
 import com.campus.util.DBConnection;
 import com.campus.util.FileLogger;
 import com.campus.util.InputValidator;
+
+import java.util.Optional;
+import java.util.Scanner;
 
 public class MainMenu {
 

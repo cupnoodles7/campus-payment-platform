@@ -3,33 +3,33 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+ 
     <groupId>com.campus</groupId>
     <artifactId>campus-payment-platform</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>campus-payment-platform</name>
-
+ 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <lombok.version>1.18.42</lombok.version>
     </properties>
-
+ 
     <dependencies>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.32</version>
         </dependency>
-
+ 
         <!-- Source: https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.42</version>
-            <scope>compile</scope>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
-
+ 
         <!-- SLF4J provider: Logback supplies the actual logging implementation
              (and transitively the matching slf4j-api). Without a provider on the
              classpath SLF4J defaults to a NOP logger and discards all log output. -->
@@ -44,5 +44,62 @@
         <version>42.7.7</version>
     </dependency>
     </dependencies>
+ 
+    <build>
+        <finalName>campus-payment-platform</finalName>
+        <plugins>
+            <!-- Java 23+ no longer runs annotation processors found on the
+                 classpath implicitly, so Lombok must be declared explicitly as
+                 an annotation processor path. Without this no getters/setters/
+                 constructors are generated and the project fails to compile. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+ 
+            <!-- Package an executable fat jar bundling all runtime
+                 dependencies, with MainMenu as the entry point. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.campus.console.MainMenu</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
-

@@ -18,6 +18,7 @@ public class Student {
     private String name;
     private Optional<String> email;
     private Optional<String> phone;
+    private int pin;          // numeric PIN — used for login and to authorise transfers
     private Wallet wallet;    // fetched as object at runtime, not stored inside student in DB
 
     public String display() {

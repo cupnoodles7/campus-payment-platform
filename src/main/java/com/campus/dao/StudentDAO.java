@@ -18,17 +18,19 @@ public class StudentDAO {
         s.setName(rs.getString("name"));
         s.setEmail(Optional.ofNullable(rs.getString("email")));
         s.setPhone(Optional.ofNullable(rs.getString("phone")));
+        s.setPin(rs.getInt("pin"));
         return s;
     }
 
     // inserts student, SQL auto generates student_id, returns it
     public int insert(Student s) {
-        String sql = "INSERT INTO students (name, email, phone) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO students (name, email, phone, pin) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, s.getName());
             ps.setString(2, s.getEmail().orElse(null));
             ps.setString(3, s.getPhone().orElse(null));
+            ps.setInt(4, s.getPin());
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
             if (keys.next()) {
@@ -44,7 +46,7 @@ public class StudentDAO {
 
     // links wallet_id back to student row after wallet is created
     public void updateWalletId(int studentId, int walletId) {
-        String sql = "UPDATE students SET WalletId=? WHERE student_id=?";
+        String sql = "UPDATE students SET wallet_id=? WHERE student_id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, walletId);
@@ -82,6 +84,21 @@ public class StudentDAO {
             }
         } catch (SQLException e) {
             throw new DatabaseException("Find failed: " + e.getMessage(), e);
+        }
+    }
+
+    // used for login — looks a student up by their (unique) email
+    public Student findByEmail(String email) {
+        String sql = "SELECT * FROM students WHERE email=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapRow(rs);
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Find by email failed: " + e.getMessage(), e);
         }
     }
 

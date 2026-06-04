@@ -4,6 +4,7 @@ import com.campus.exception.DailyTransferLimitException;
 import com.campus.exception.InsufficientBalanceException;
 import com.campus.exception.InvalidAmountException;
 import com.campus.exception.WalletNotFoundException;
+import com.campus.service.StudentService;
 import com.campus.service.WalletService;
 import com.campus.util.FileLogger;
 
@@ -13,10 +14,12 @@ public class WalletMenu {
 
     private final Scanner scanner;
     private final WalletService walletService;
+    private final StudentService studentService;
 
     public WalletMenu(Scanner scanner) {
         this.scanner = scanner;
         this.walletService = new WalletService();
+        this.studentService = new StudentService();
     }
 
     public void show() {
@@ -70,6 +73,12 @@ public class WalletMenu {
     private void handleTransfer() {
         try {
             int senderId = readInt("Enter your (sender) student ID: ");
+            int pin = readInt("Enter your PIN to authorise this transfer: ");
+            if (!studentService.verifyPin(senderId, pin)) {
+                System.out.println("Incorrect PIN. Transfer cancelled.");
+                FileLogger.logWarn("Transfer blocked — bad PIN for student " + senderId);
+                return;
+            }
             int receiverId = readInt("Enter receiver student ID: ");
             double amount = readDouble("Enter amount to transfer: ");
             walletService.transfer(senderId, receiverId, amount);

@@ -70,8 +70,13 @@ public class DBConnection {
                 "name VARCHAR(100) NOT NULL," +
                 "email VARCHAR(100) UNIQUE," +
                 "phone VARCHAR(20) UNIQUE," +
+                "pin INT," +
                 "wallet_id INT UNIQUE" +
                 ")";
+
+        // ensures the pin column exists on databases created before it was added
+        String addPinColumn =
+                "ALTER TABLE students ADD COLUMN IF NOT EXISTS pin INT";
 
         String createWalletsTable =
                 "CREATE TABLE IF NOT EXISTS wallets (" +
@@ -115,6 +120,7 @@ public class DBConnection {
         try (Connection conn = getConnection()) {
             // conn.createStatement().execute(createDB);
             conn.createStatement().execute(createStudentsTable);
+            conn.createStatement().execute(addPinColumn);
             conn.createStatement().execute(createWalletsTable);
             conn.createStatement().execute(transactionTable);
             conn.createStatement().execute(duesTable);

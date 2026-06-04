@@ -15,19 +15,19 @@ public class StudentMenu {
     public void show() {
         while (true) {
             System.out.println("\n--- Student Menu ---");
-            System.out.println("1. Register Student");
-            System.out.println("2. Update Student");
-            System.out.println("3. Search by ID");
-            System.out.println("4. Display All");
-            System.out.println("5. Back");
+            // System.out.println("1. Register Student");
+            System.out.println("1. Update Student");
+            System.out.println("2. Search by ID");
+            System.out.println("3. Display All");
+            System.out.println("4. Back");
             System.out.print("Choice: ");
 
             switch (sc.nextLine().trim()) {
-                case "1" -> register();
-                case "2" -> update();
-                case "3" -> search();
-                case "4" -> displayAll();
-                case "5" -> { return; }
+                // case "1" -> register();
+                case "1" -> update();
+                case "2" -> search();
+                case "3" -> displayAll();
+                case "4" -> { return; }
                 default  -> System.out.println("Invalid choice.");
             }
         }

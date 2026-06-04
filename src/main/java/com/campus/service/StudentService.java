@@ -49,6 +49,24 @@ public class StudentService {
         return s;
     }
 
+    // login by email + PIN — returns the student (with wallet) or null if credentials are wrong
+    public Student login(String email, int pin) {
+        Student s = studentDAO.findByEmail(email);
+        if (s == null || s.getPin() != pin) {
+            FileLogger.logWarn("Login failed for email: " + email);
+            return null;
+        }
+        s.setWallet(walletDAO.getByStudentId(s.getStudentId()));
+        FileLogger.logInfo("Student logged in — ID: " + s.getStudentId());
+        return s;
+    }
+
+    // verifies a student's PIN — used to authorise wallet transfers
+    public boolean verifyPin(int studentId, int pin) {
+        Student s = studentDAO.findById(studentId);
+        return s != null && s.getPin() == pin;
+    }
+
     public void updateStudent(Student s) {
         if (studentDAO.findById(s.getStudentId()) == null)
             throw new StudentNotFoundException("Student ID " + s.getStudentId() + " not found.");

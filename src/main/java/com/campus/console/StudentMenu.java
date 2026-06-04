@@ -65,7 +65,10 @@ public class StudentMenu {
         try {
             System.out.print("Enter Student ID: ");
             int id = Integer.parseInt(sc.nextLine().trim());
-            System.out.println(service.searchById(id).display());
+            Student s = service.searchById(id);
+            System.out.println("\n--- Student Details ---" +
+                               "\nStudent ID : " + s.getStudentId() +
+                               "\nName       : " + s.getName());
         } catch (StudentNotFoundException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (NumberFormatException e) {

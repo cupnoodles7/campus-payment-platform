@@ -7,6 +7,7 @@ import com.campus.model.Student;
 import com.campus.model.Wallet;
 import com.campus.util.DBConnection;
 import com.campus.util.FileLogger;
+import com.campus.util.InputValidator;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -23,6 +24,7 @@ public class StudentService {
     public int registerStudent(Student s) {
         // phone is mandatory and must be unique; email is optional. Login is by ID + PIN.
         String phone = requirePhone(s);
+        validateEmailIfPresent(s);
         Student existing = studentDAO.findByPhone(phone);
         if (existing != null)
             throw new DuplicateStudentException("Phone number " + phone + " is already registered.");
@@ -99,6 +101,7 @@ public class StudentService {
             throw new StudentNotFoundException("Student ID " + s.getStudentId() + " not found.");
 
         String phone = requirePhone(s);
+        validateEmailIfPresent(s);
         Student existing = studentDAO.findByPhone(phone);
         if (existing != null && existing.getStudentId() != s.getStudentId())
             throw new DuplicateStudentException("Phone number " + phone + " is already registered.");
@@ -107,12 +110,22 @@ public class StudentService {
         FileLogger.logInfo("Student updated — ID: " + s.getStudentId());
     }
 
-    // ensures a non-blank phone number is present, returns the trimmed value
+    // ensures a present, validly-formatted phone number, returns the trimmed value
     private String requirePhone(Student s) {
         String phone = s.getPhone().map(String::trim).orElse("");
         if (phone.isEmpty())
             throw new InvalidAmountException("Phone number is required.");
+        if (!InputValidator.isValidPhone(phone))
+            throw new InvalidAmountException("Invalid phone number format: " + phone);
         return phone;
+    }
+
+    // email is optional, but if provided it must be validly formatted
+    private void validateEmailIfPresent(Student s) {
+        s.getEmail().map(String::trim).filter(e -> !e.isEmpty()).ifPresent(email -> {
+            if (!InputValidator.isValidEmail(email))
+                throw new InvalidAmountException("Invalid email format: " + email);
+        });
     }
 
     public Student searchById(int id) {

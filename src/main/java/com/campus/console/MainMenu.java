@@ -6,6 +6,7 @@ import com.campus.model.Student;
 import com.campus.service.StudentService;
 import com.campus.util.DBConnection;
 import com.campus.util.FileLogger;
+import com.campus.util.InputValidator;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -53,10 +54,9 @@ public class MainMenu {
             System.out.print("Name: ");
             String name = sc.nextLine().trim();
 
-            String phone = readRequired("Phone: ");
+            String phone = InputValidator.readPhone(sc, "Phone: ");
 
-            System.out.print("Email (Enter to skip): ");
-            String email = sc.nextLine().trim();
+            String email = InputValidator.readOptionalEmail(sc, "Email (Enter to skip): ");
 
             int pin = readInt("Set a numeric PIN (used for login & transfers): ");
 
@@ -72,6 +72,7 @@ public class MainMenu {
             System.out.println("\nRegistration successful!");
             System.out.println("Your Student ID : " + studentId);
             System.out.println("Save this ID — login with your Student ID and PIN.");
+            System.out.println("Initial wallet balance: $0.00, with a credit limit of $20,000.00.");
             FileLogger.logInfo("New student registered: " + studentId);
 
         } catch (InvalidAmountException | DuplicateStudentException e) {
@@ -109,16 +110,6 @@ public class MainMenu {
 
         System.out.println("Too many failed attempts.");
         return null;
-    }
-
-    // reads a non-empty value, re-prompting until something is entered
-    private String readRequired(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String line = sc.nextLine().trim();
-            if (!line.isEmpty()) return line;
-            System.out.println("This field is required.");
-        }
     }
 
     // reads a whole number, re-prompting until valid

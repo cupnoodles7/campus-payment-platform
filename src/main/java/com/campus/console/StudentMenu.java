@@ -3,6 +3,7 @@ package com.campus.console;
 import com.campus.exception.*;
 import com.campus.model.Student;
 import com.campus.service.StudentService;
+import com.campus.util.InputValidator;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Scanner;
@@ -42,10 +43,9 @@ public class StudentMenu {
             System.out.print("New Name: ");
             String name = sc.nextLine().trim();
 
-            System.out.print("New Email (Enter to skip): ");
-            String email = sc.nextLine().trim();
+            String email = InputValidator.readOptionalEmail(sc, "New Email (Enter to skip): ");
 
-            String phone = readRequired("New Phone: ");
+            String phone = InputValidator.readPhone(sc, "New Phone: ");
 
             Student s = new Student();
             s.setStudentId(studentId);
@@ -58,16 +58,6 @@ public class StudentMenu {
 
         } catch (StudentNotFoundException | InvalidAmountException | DuplicateStudentException e) {
             System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-    // reads a non-empty value, re-prompting until something is entered
-    private String readRequired(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String line = sc.nextLine().trim();
-            if (!line.isEmpty()) return line;
-            System.out.println("This field is required.");
         }
     }
 

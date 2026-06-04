@@ -7,14 +7,11 @@ import java.util.regex.Pattern;
 
 public class InputValidator {
 
-    // basic email: something@something.tld
     private static final Pattern EMAIL =
             Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    // 10–15 digits, optionally prefixed with a single +
     private static final Pattern PHONE =
             Pattern.compile("^\\+?[0-9]{10,15}$");
 
-    // Typing this at any prompt cancels the current action and returns to the menu.
     private static final String BACK_KEYWORD = "b";
 
     public static boolean isValidEmail(String email) {
@@ -25,11 +22,7 @@ public class InputValidator {
         return phone != null && PHONE.matcher(phone.trim()).matches();
     }
 
-    /**
-     * Reads one trimmed line. Throws {@link InputCancelledException} (caught by the
-     * menu loop) if the user typed the back keyword, so callers never have to handle
-     * the back-to-menu case explicitly.
-     */
+    
     private static String readLine(Scanner sc, String prompt) {
         System.out.print(prompt);
         String value = sc.nextLine().trim();
@@ -39,20 +32,24 @@ public class InputValidator {
         return value;
     }
 
-    /** Prints the reason, then aborts to the menu (reminding the user about 'b'). */
     private static InputCancelledException abort(String reason) {
         System.out.println(reason + " — returning to menu. (Tip: type 'b' at any prompt to go back.)");
         return new InputCancelledException(reason);
     }
 
-    // required phone — valid number returned, otherwise back to the menu
     public static String readPhone(Scanner sc, String prompt) {
         String value = readLine(sc, prompt);
         if (isValidPhone(value)) return value;
         throw abort("Invalid phone number (enter 10–15 digits, optionally starting with +)");
     }
 
-    // optional email — "" if skipped (blank), valid email returned, otherwise back to the menu
+    public static String readOptionalPhone(Scanner sc, String prompt) {
+        String value = readLine(sc, prompt);
+        if (value.isEmpty()) return "";
+        if (isValidPhone(value)) return value;
+        throw abort("Invalid phone number (enter 10–15 digits, optionally starting with +)");
+    }
+
     public static String readOptionalEmail(Scanner sc, String prompt) {
         String value = readLine(sc, prompt);
         if (value.isEmpty()) return "";
@@ -69,7 +66,6 @@ public class InputValidator {
         }
     }
 
-    // positive monetary amount — must parse and be greater than 0
     public static double readDouble(Scanner sc, String prompt) {
         String value = readLine(sc, prompt);
         try {

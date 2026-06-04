@@ -44,18 +44,26 @@ public class StudentMenu {
 
     private void update() {
         try {
-            System.out.print("New Name: ");
-            String name = sc.nextLine().trim();
+            Student current = service.searchById(studentId);
+            System.out.println("Leave a field blank to keep its current value.");
 
-            String email = InputValidator.readOptionalEmail(sc, "New Email (Enter to skip): ");
+            System.out.print("New Name [" + current.getName() + "]: ");
+            String nameInput = sc.nextLine().trim();
+            String name = nameInput.isEmpty() ? current.getName() : nameInput;
 
-            String phone = InputValidator.readPhone(sc, "New Phone: ");
+            String emailInput = InputValidator.readOptionalEmail(sc,
+                    "New Email [" + current.getEmail().orElse("none") + "] (Enter to keep): ");
+            Optional<String> email = emailInput.isEmpty() ? current.getEmail() : Optional.of(emailInput);
+
+            String phoneInput = InputValidator.readOptionalPhone(sc,
+                    "New Phone [" + current.getPhone().orElse("none") + "] (Enter to keep): ");
+            Optional<String> phone = phoneInput.isEmpty() ? current.getPhone() : Optional.of(phoneInput);
 
             Student s = new Student();
             s.setStudentId(studentId);
             s.setName(name);
-            s.setEmail(Optional.ofNullable(email.isEmpty() ? null : email));
-            s.setPhone(Optional.of(phone));
+            s.setEmail(email);
+            s.setPhone(phone);
 
             service.updateStudent(s);
             System.out.println("Updated successfully.");

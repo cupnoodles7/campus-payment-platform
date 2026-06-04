@@ -24,15 +24,15 @@ public class StudentMenu {
             System.out.println("\n--- Student Menu ---");
             System.out.println("1. Update my profile");
             System.out.println("2. Search by ID");
-            System.out.println("3. Display All");
-            System.out.println("4. Back");
+            // System.out.println("3. Display All");
+            System.out.println("3. Back");
             System.out.print("Choice: ");
 
             switch (sc.nextLine().trim()) {
                 case "1" -> update();
                 case "2" -> search();
-                case "3" -> displayAll();
-                case "4" -> { return; }
+                // case "3" -> displayAll();
+                case "3" -> { return; }
                 default  -> System.out.println("Invalid choice.");
             }
         }

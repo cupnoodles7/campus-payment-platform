@@ -5,7 +5,6 @@ package com.campus.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import com.campus.dao.TransactionDAO;
@@ -144,15 +143,23 @@ public class WalletService implements TransferHandler {
     }
 
     public void checkDailyLimit(int studentId, double amt) {
+        Wallet wallet = walletDAO.getByStudentId(studentId);
+        // sender existence is validated in transfer(); skip here if no wallet yet
+        if (wallet == null) return;
+
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
-        List<Transaction> todayTxns = txnDAO.findBetweenDates(startOfDay, LocalDateTime.now())
+        double transferredToday = txnDAO.findBetweenDates(startOfDay, LocalDateTime.now())
             .stream()
             .filter(t -> t.getSenderId() == studentId && t.getType() == TxnType.TRANSFER)
-            .toList();
-        Wallet wallet = walletDAO.getByStudentId(studentId);
-        if (todayTxns.size() >= (int) wallet.getDailyTransferLimit())
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+
+        if (transferredToday + amt > wallet.getDailyTransferLimit()) {
             FileLogger.logInfo("Daily transfer limit reached for studentId=" + studentId);
-            throw new DailyTransferLimitException("Daily transfer limit reached");
+            throw new DailyTransferLimitException(
+                "Daily transfer limit of " + wallet.getDailyTransferLimit()
+                + " exceeded (already transferred " + transferredToday + " today)");
+        }
     }
 
     private void validateAmount(double amt) {

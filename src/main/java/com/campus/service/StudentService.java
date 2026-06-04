@@ -14,16 +14,39 @@ public class StudentService {
     private final StudentDAO studentDAO = new StudentDAO();
     private final WalletDAO walletDAO = new WalletDAO();
 
-    public void registerStudent(Student s) {
+    // register — returns generated student ID so menu can display it
+    public int registerStudent(Student s) {
         if (s.getEmail().isEmpty() && s.getPhone().isEmpty())
             throw new InvalidAmountException("Either email or phone must be provided.");
 
-        if (studentDAO.existsById(s.getStudentId()))
-            throw new DuplicateStudentException("Student ID " + s.getStudentId() + " already exists.");
+        // step 1 — SQL auto generates student_id
+        int generatedStudentId = studentDAO.insert(s);
 
-        studentDAO.insert(s);
-        walletDAO.insert(new Wallet(0, s.getStudentId(), 0.0, 5000.0, 20000.0, 0.0));
-        FileLogger.logInfo("Student registered — ID: " + s.getStudentId());
+        // step 2 — create wallet using generated student_id
+        walletDAO.insert(new Wallet(0, generatedStudentId, 0.0, 5000.0, 20000.0, 0.0));
+
+        // step 3 — fetch wallet object to get generated wallet_id
+        Wallet wallet = walletDAO.getByStudentId(generatedStudentId);
+
+        // step 4 — link wallet_id into student row
+        studentDAO.updateWalletId(generatedStudentId, wallet.getWalletId());
+
+        FileLogger.logInfo("Student registered — ID: " + generatedStudentId +
+                           ", WalletID: " + wallet.getWalletId());
+        return generatedStudentId;
+    }
+
+    // login — called from MainMenu using student ID only
+    public Student login(int studentId) {
+        Student s = studentDAO.findById(studentId);
+        if (s == null) {
+            FileLogger.logWarn("Login failed — Student ID " + studentId + " not found.");
+            throw new StudentNotFoundException("Student ID " + studentId + " not found.");
+        }
+        // fetch wallet object and attach to student at runtime
+        s.setWallet(walletDAO.getByStudentId(studentId));
+        FileLogger.logInfo("Student logged in — ID: " + studentId);
+        return s;
     }
 
     public void updateStudent(Student s) {
@@ -42,6 +65,7 @@ public class StudentService {
         if (s == null)
             throw new StudentNotFoundException("Student ID " + id + " not found.");
 
+        // fetch wallet object and attach to student
         s.setWallet(walletDAO.getByStudentId(id));
         return s;
     }

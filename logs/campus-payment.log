@@ -1,4 +1,8 @@
-2026-06-03 17:00:10.999 [main] INFO  com.campus.util.FileLogger - Student registered — ID: 102
-2026-06-03 17:00:39.933 [main] INFO  com.campus.util.FileLogger - Student registered — ID: 103
-2026-06-03 17:01:25.698 [main] INFO  com.campus.util.FileLogger - Student registered — ID: 106
-2026-06-03 17:01:51.443 [main] INFO  com.campus.util.FileLogger - Student updated — ID: 102
+2026-06-04 11:09:36.954 [main] INFO  com.campus.util.FileLogger - Student inserted — generated ID: 1
+2026-06-04 11:09:37.026 [main] INFO  com.campus.util.FileLogger - Inserted wallet for studentId=1
+2026-06-04 11:09:37.049 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=1
+2026-06-04 11:09:37.093 [main] INFO  com.campus.util.FileLogger - WalletId 1 linked to studentId: 1
+2026-06-04 11:09:37.094 [main] INFO  com.campus.util.FileLogger - Student registered — ID: 1, WalletID: 1
+2026-06-04 11:10:21.952 [main] INFO  com.campus.util.FileLogger - Student updated — ID: 1
+2026-06-04 11:10:21.954 [main] INFO  com.campus.util.FileLogger - Student updated — ID: 1
+2026-06-04 11:12:24.892 [main] INFO  com.campus.util.FileLogger - Loading wallet for studentId=1

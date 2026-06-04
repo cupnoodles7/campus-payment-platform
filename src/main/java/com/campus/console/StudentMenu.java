@@ -35,9 +35,6 @@ public class StudentMenu {
 
     private void register() {
         try {
-            System.out.print("Student ID: ");
-            int id = Integer.parseInt(sc.nextLine().trim());
-
             System.out.print("Name: ");
             String name = sc.nextLine().trim();
 
@@ -47,18 +44,19 @@ public class StudentMenu {
             System.out.print("Phone (Enter to skip): ");
             String phone = sc.nextLine().trim();
 
-            service.registerStudent(Student.builder()
-                    .studentId(id)
-                    .name(name)
-                    .email(Optional.ofNullable(email.isEmpty() ? null : email))
-                    .phone(Optional.ofNullable(phone.isEmpty() ? null : phone))
-                    .build());
+            Student s = new Student();
+            s.setName(name);
+            s.setEmail(Optional.ofNullable(email.isEmpty() ? null : email));
+            s.setPhone(Optional.ofNullable(phone.isEmpty() ? null : phone));
 
-            System.out.println("Registered successfully.");
-        } catch (DuplicateStudentException | InvalidAmountException e) {
+            int id = service.registerStudent(s);
+
+            System.out.println("\n Registration Successful!");
+            System.out.println(" Your Student ID : " + id);
+            System.out.println(" Save this ID — you will need it to login.");
+
+        } catch (InvalidAmountException e) {
             System.out.println("Error: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID.");
         }
     }
 
@@ -76,14 +74,15 @@ public class StudentMenu {
             System.out.print("New Phone (Enter to skip): ");
             String phone = sc.nextLine().trim();
 
-            service.updateStudent(Student.builder()
-                    .studentId(id)
-                    .name(name)
-                    .email(Optional.ofNullable(email.isEmpty() ? null : email))
-                    .phone(Optional.ofNullable(phone.isEmpty() ? null : phone))
-                    .build());
+            Student s = new Student();
+            s.setStudentId(id);
+            s.setName(name);
+            s.setEmail(Optional.ofNullable(email.isEmpty() ? null : email));
+            s.setPhone(Optional.ofNullable(phone.isEmpty() ? null : phone));
 
+            service.updateStudent(s);
             System.out.println("Updated successfully.");
+
         } catch (StudentNotFoundException | InvalidAmountException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (NumberFormatException e) {
@@ -95,7 +94,7 @@ public class StudentMenu {
         try {
             System.out.print("Enter Student ID: ");
             int id = Integer.parseInt(sc.nextLine().trim());
-            System.out.println(service.searchById(id));
+            System.out.println(service.searchById(id).display());
         } catch (StudentNotFoundException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (NumberFormatException e) {
@@ -112,7 +111,7 @@ public class StudentMenu {
                 case "3" -> Comparator.comparing(Student::getName, String.CASE_INSENSITIVE_ORDER).reversed();
                 default  -> Comparator.comparingInt(Student::getStudentId);
             };
-            service.displayAll(comparator).forEach(System.out::println);
+            service.displayAll(comparator).forEach(s -> System.out.println(s.display()));
         } catch (StudentNotFoundException e) {
             System.out.println("Error: " + e.getMessage());
         }

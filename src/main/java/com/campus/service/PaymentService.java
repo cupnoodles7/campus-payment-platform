@@ -11,6 +11,7 @@ import com.campus.model.TxnType;
 import com.campus.model.Wallet;
 import com.campus.util.DBConnection;
 import com.campus.util.FileLogger;
+import com.campus.util.FraudDetector;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,6 +24,9 @@ public class PaymentService {
     private final TransactionDAO txnDAO = new TransactionDAO();
 
     public void pay(int studentId, String paymentType, double amount) {
+
+        // Block the transaction up front if the student is over the rate limit.
+        FraudDetector.enforceLimit(studentId);
 
         // map string to functional interface (PaymentProcessor)
         PaymentProcessor processor = switch (paymentType) {
@@ -71,6 +75,13 @@ public class PaymentService {
 
             conn.commit();
             FileLogger.logInfo(label + " payment SUCCESS: student=" + studentId + " ₹" + amount);
+
+            if (FraudDetector.isSuspicious(studentId)) {
+                String alert = "SUSPICIOUS: studentId=" + studentId
+                    + " made more than 5 outgoing transactions within 5 minutes";
+                FileLogger.logError(alert);
+                System.out.println("⚠  " + alert);
+            }
 
         } catch (InsufficientBalanceException | InvalidAmountException e) {
             rollback(conn);

@@ -2,6 +2,11 @@
 
 package com.campus.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import com.campus.dao.SplitExpenseDAO;
 import com.campus.dao.StudentDAO;
 import com.campus.exception.InsufficientBalanceException;
@@ -9,11 +14,6 @@ import com.campus.exception.SplitExpenseException;
 import com.campus.model.SplitExpense;
 import com.campus.model.TxnType;
 import com.campus.util.FileLogger;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class SplitExpenseService {
 
@@ -256,6 +256,7 @@ public class SplitExpenseService {
 
     // ── Validate member IDs exist in DB ───────────────────────
     private void validateMembers(List<Integer> members) {
+
         List<Integer> invalid = new ArrayList<>();
         for (int memberId : members) {
             if (!studentDAO.existsById(memberId))

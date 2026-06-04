@@ -4,3 +4,4 @@ app.log
 .project
 .settings/
 .env
+logs/

@@ -9,13 +9,19 @@ import java.util.UUID;
 
 import com.campus.dao.TransactionDAO;
 import com.campus.dao.WalletDAO;
-import com.campus.exception.*;
+import com.campus.exception.BalanceCapExceededException;
+import com.campus.exception.DailyTransferLimitException;
+import com.campus.exception.DatabaseException;
+import com.campus.exception.InsufficientBalanceException;
+import com.campus.exception.InvalidAmountException;
+import com.campus.exception.WalletNotFoundException;
 import com.campus.interfaces.TransferHandler;
 import com.campus.model.Transaction;
 import com.campus.model.TxnType;
 import com.campus.model.Wallet;
 import com.campus.util.DBConnection;
 import com.campus.util.FileLogger;
+import com.campus.util.FraudDetector;
 
 public class WalletService implements TransferHandler {
 
@@ -36,6 +42,7 @@ public class WalletService implements TransferHandler {
     // Transfer with an explicit type — lets callers (e.g. split settlement) label the transaction
     public void transfer(int senderId, int receiverId, double amt, TxnType type) {
         validateAmount(amt);
+        FraudDetector.enforceLimit(senderId);
         checkDailyLimit(senderId, amt);
 
         Connection conn = null;
@@ -45,10 +52,11 @@ public class WalletService implements TransferHandler {
 
             Wallet senderWallet = walletDAO.getByStudentId(senderId);
             if (senderWallet == null) throw new WalletNotFoundException("Wallet not found: " + senderId);
-            if (senderWallet.getBalance() < amt) throw new InsufficientBalanceException("Insufficient balance");
 
             Wallet receiverWallet = walletDAO.getByStudentId(receiverId);
             if (receiverWallet == null) throw new WalletNotFoundException("Wallet not found: " + receiverId);
+
+            if (senderWallet.getBalance() < amt) throw new InsufficientBalanceException("Insufficient balance");
 
             walletDAO.atomicTransfer(senderId, receiverId, amt, conn);
 
@@ -61,6 +69,13 @@ public class WalletService implements TransferHandler {
             ), conn);
 
             conn.commit();
+
+            if (FraudDetector.isSuspicious(senderId)) {
+                String alert = "SUSPICIOUS: studentId=" + senderId
+                    + " made more than 5 outgoing transactions within 5 minutes";
+                FileLogger.logError(alert);
+                System.out.println("⚠  " + alert);
+            }
 
         } catch (Exception e) {
             if (conn != null) { try { conn.rollback(); } catch (SQLException ignored) {} }
@@ -110,6 +125,7 @@ public class WalletService implements TransferHandler {
     // Withdraw 
     public void withdraw(int studentId, double amt) {
         validateAmount(amt);
+        FraudDetector.enforceLimit(studentId);
 
         Connection conn = null;
         try {
@@ -129,6 +145,13 @@ public class WalletService implements TransferHandler {
             ), conn);
             FileLogger.logInfo("Withdrew " + amt + " from studentId=" + studentId);
             conn.commit();
+
+            if (FraudDetector.isSuspicious(studentId)) {
+                String alert = "SUSPICIOUS: studentId=" + studentId
+                    + " made more than 5 outgoing transactions within 5 minutes";
+                FileLogger.logError(alert);
+                System.out.println("⚠  " + alert);
+            }
 
         } catch (Exception e) {
             if (conn != null) { try { conn.rollback(); } catch (SQLException ignored) {} }

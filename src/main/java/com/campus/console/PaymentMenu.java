@@ -70,6 +70,8 @@ public class PaymentMenu {
             paymentService.pay(studentId, paymentType, amount);
             System.out.printf("Payment of Rs.%.2f for %s successful!%n", amount, paymentType);
 
+        } catch (SuspiciousActivityException e) {
+            System.out.println("Payment blocked: " + e.getMessage());
         } catch (InvalidAmountException e) {
             System.out.println("Invalid amount: " + e.getMessage());
         } catch (InsufficientBalanceException e) {

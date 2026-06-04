@@ -3,6 +3,8 @@ import com.campus.exception.BalanceCapExceededException;
 import com.campus.exception.DailyTransferLimitException;
 import com.campus.exception.InsufficientBalanceException;
 import com.campus.exception.InvalidAmountException;
+import com.campus.exception.StudentNotFoundException;
+import com.campus.exception.SuspiciousActivityException;
 import com.campus.exception.WalletNotFoundException;
 import com.campus.service.StudentService;
 import com.campus.service.WalletService;
@@ -64,6 +66,9 @@ public class WalletMenu {
             double amount = readDouble("Enter amount to withdraw: ");
             walletService.withdraw(studentId, amount);
             System.out.println("Withdrawal successful.");
+        } catch (SuspiciousActivityException e) {
+            FileLogger.logWarn("Withdrawal blocked — " + e.getMessage());
+            System.out.println("Withdrawal blocked: " + e.getMessage());
         } catch (InvalidAmountException | InsufficientBalanceException | WalletNotFoundException e) {
             FileLogger.logWarn("Withdrawal failed: " + e.getMessage());
             System.out.println("Withdrawal failed: " + e.getMessage());
@@ -79,11 +84,17 @@ public class WalletMenu {
                 return;
             }
             int receiverId = readInt("Enter receiver student ID: ");
+            // Validate the receiver exists before asking for the amount.
+            studentService.searchById(receiverId);
             double amount = readDouble("Enter amount to transfer: ");
             walletService.transfer(studentId, receiverId, amount);
             System.out.println("Transfer successful.");
+        } catch (SuspiciousActivityException e) {
+            FileLogger.logWarn("Transfer blocked — " + e.getMessage());
+            System.out.println("Transfer blocked: " + e.getMessage());
         } catch (InvalidAmountException | InsufficientBalanceException
-                 | DailyTransferLimitException | WalletNotFoundException e) {
+                 | DailyTransferLimitException | WalletNotFoundException
+                 | StudentNotFoundException e) {
             FileLogger.logWarn("Transfer failed: " + e.getMessage());
             System.out.println("Transfer failed: " + e.getMessage());
         }

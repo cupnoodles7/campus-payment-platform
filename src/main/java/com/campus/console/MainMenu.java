@@ -77,7 +77,7 @@ public class MainMenu {
         } catch (InvalidAmountException e) {
             System.out.println("Registration failed: " + e.getMessage());
         } catch (DatabaseException e) {
-            System.out.println("Registration failed: email or phone may already be in use.");
+            System.out.println("Registration failed: " + e.getMessage());
             FileLogger.logError("Registration failed: " + e.getMessage());
         }
     }

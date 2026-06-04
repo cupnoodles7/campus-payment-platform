@@ -119,7 +119,8 @@ public class DBConnection {
         String duesTable =
                 "CREATE TABLE IF NOT EXISTS dues (" +
                 "due_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY," +
-                "expense_id VARCHAR(30) NOT NULL," +
+                // expense_id holds a UUID string (36 chars: 32 hex + 4 hyphens)
+                "expense_id VARCHAR(36) NOT NULL," +
                 "payer_id INT NOT NULL," +
                 "payee_id INT NOT NULL," +
                 "amount DOUBLE PRECISION NOT NULL," +
@@ -127,12 +128,24 @@ public class DBConnection {
                 "FOREIGN KEY (payer_id) REFERENCES students(student_id)," +
                 "FOREIGN KEY (payee_id) REFERENCES students(student_id)" +
                 ")";
+
+        // Widen expense_id on databases created with the old VARCHAR(30) schema —
+        // UUID strings are 36 chars, so VARCHAR(30) rejected every insert.
+        String widenExpenseId =
+                "ALTER TABLE dues ALTER COLUMN expense_id TYPE VARCHAR(36)";
+
         try (Connection conn = getConnection()) {
             conn.createStatement().execute(createStudentsTable);
             conn.createStatement().execute(addPinColumn);
             conn.createStatement().execute(createWalletsTable);
             conn.createStatement().execute(transactionTable);
             conn.createStatement().execute(duesTable);
+
+            try (var st = conn.createStatement()) {
+                st.execute(widenExpenseId);
+            } catch (SQLException ignored) {
+                // column already wide enough or table just created — safe to skip
+            }
 
             // run transaction-table migrations independently (ignore the ones that don't apply)
             for (String migration : transactionMigrations) {

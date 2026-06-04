@@ -209,11 +209,10 @@ public class SplitMenu {
     private void printDues(List<SplitExpense> dues) {
         System.out.println("--------------------------------------------");
         for (SplitExpense due : dues) {
-            System.out.printf("Due ID: %-5d | Expense: %s | To: %-5d | Amount: ₹%-8.2f | Status: %s%n",
+            System.out.printf("Due ID: %-5d | Pay ₹%-8.2f to student %-5d | %s%n",
                 due.getDueId(),
-                due.getExpenseId(),
-                due.getPayeeId(),
                 due.getAmount(),
+                due.getPayeeId(),
                 due.isStatus() ? "Settled" : "Pending"
             );
         }

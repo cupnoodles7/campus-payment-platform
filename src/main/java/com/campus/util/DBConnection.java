@@ -89,18 +89,32 @@ public class DBConnection {
                 "FOREIGN KEY (student_id) REFERENCES students(student_id)" +
                 ")";
 
+        // Column names match the Transaction model / TransactionDAO:
+        // txn_id (UUID), sender_id / receiver_id (student IDs), timestamp.
+        // No FKs on sender/receiver: campus payments use receiver_id = 0 (no payee).
         String transactionTable =
                 "CREATE TABLE IF NOT EXISTS transactions (" +
                 "transaction_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY," +
-                "from_wallet_id INT," +
-                "to_wallet_id INT," +
+                "txn_id VARCHAR(36) NOT NULL," +
+                "sender_id INT," +
+                "receiver_id INT," +
                 "amount DOUBLE PRECISION NOT NULL," +
                 "type VARCHAR(50) NOT NULL," +
-                "transaction_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                "status VARCHAR(20) NOT NULL," +
-                "FOREIGN KEY (from_wallet_id) REFERENCES wallets(wallet_id)," +
-                "FOREIGN KEY (to_wallet_id) REFERENCES wallets(wallet_id)" +
+                "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                "status VARCHAR(20) NOT NULL" +
                 ")";
+
+        // Best-effort migration for databases created with the old transactions schema
+        // (from_wallet_id / to_wallet_id / transaction_time, FKs to wallets). Each runs
+        // independently — statements that don't apply (already migrated) are ignored.
+        String[] transactionMigrations = {
+                "ALTER TABLE transactions DROP CONSTRAINT IF EXISTS transactions_from_wallet_id_fkey",
+                "ALTER TABLE transactions DROP CONSTRAINT IF EXISTS transactions_to_wallet_id_fkey",
+                "ALTER TABLE transactions RENAME COLUMN from_wallet_id TO sender_id",
+                "ALTER TABLE transactions RENAME COLUMN to_wallet_id TO receiver_id",
+                "ALTER TABLE transactions RENAME COLUMN transaction_time TO timestamp",
+                "ALTER TABLE transactions ADD COLUMN IF NOT EXISTS txn_id VARCHAR(36)"
+        };
 
         String duesTable =
                 "CREATE TABLE IF NOT EXISTS dues (" +
@@ -113,17 +127,21 @@ public class DBConnection {
                 "FOREIGN KEY (payer_id) REFERENCES students(student_id)," +
                 "FOREIGN KEY (payee_id) REFERENCES students(student_id)" +
                 ")";
-        String createDB = "CREATE DATABASE IF NOT EXISTS campus_db";
-
-        //INSERT INTO transactions " + "(txn_id, sender_id, receiver_id, amount, type, timestamp, status)
-
         try (Connection conn = getConnection()) {
-            // conn.createStatement().execute(createDB);
             conn.createStatement().execute(createStudentsTable);
             conn.createStatement().execute(addPinColumn);
             conn.createStatement().execute(createWalletsTable);
             conn.createStatement().execute(transactionTable);
             conn.createStatement().execute(duesTable);
+
+            // run transaction-table migrations independently (ignore the ones that don't apply)
+            for (String migration : transactionMigrations) {
+                try (var st = conn.createStatement()) {
+                    st.execute(migration);
+                } catch (SQLException ignored) {
+                    // statement does not apply to this database (already migrated) — safe to skip
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import com.campus.dao.StudentDAO;
 import com.campus.exception.InsufficientBalanceException;
 import com.campus.exception.SplitExpenseException;
 import com.campus.model.SplitExpense;
+import com.campus.model.TxnType;
 import com.campus.util.FileLogger;
 
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class SplitExpenseService {
         }
 
         try {
-            walletService.transfer(due.getPayerId(), due.getPayeeId(), due.getAmount());
+            walletService.transfer(due.getPayerId(), due.getPayeeId(), due.getAmount(), TxnType.SPLIT_SETTLEMENT);
         } catch (InsufficientBalanceException e) {
             FileLogger.logError("settleUp failed — insufficient balance for dueId: " + dueId +
                                 ", payerId: " + payerId + ", amount: " + due.getAmount());
@@ -189,7 +190,7 @@ public class SplitExpenseService {
 
         for (SplitExpense due : pending) {
             try {
-                walletService.transfer(due.getPayerId(), due.getPayeeId(), due.getAmount());
+                walletService.transfer(due.getPayerId(), due.getPayeeId(), due.getAmount(), TxnType.SPLIT_SETTLEMENT);
             } catch (InsufficientBalanceException e) {
                 FileLogger.logError("settleAll stopped — insufficient balance at dueId: " +
                                     due.getDueId() + ", payerId: " + payerId);

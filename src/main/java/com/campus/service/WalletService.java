@@ -28,8 +28,13 @@ public class WalletService implements TransferHandler {
         transfer(from, to, amt);
     }
 
-    // Transfer 
+    // Transfer (defaults to a plain peer-to-peer TRANSFER)
     public void transfer(int senderId, int receiverId, double amt) {
+        transfer(senderId, receiverId, amt, TxnType.TRANSFER);
+    }
+
+    // Transfer with an explicit type — lets callers (e.g. split settlement) label the transaction
+    public void transfer(int senderId, int receiverId, double amt, TxnType type) {
         validateAmount(amt);
         checkDailyLimit(senderId, amt);
 
@@ -52,7 +57,7 @@ public class WalletService implements TransferHandler {
             txnDAO.insert(new Transaction(
                 UUID.randomUUID().toString(),
                 senderId, receiverId, amt,
-                TxnType.TRANSFER, LocalDateTime.now(), "SUCCESS"
+                type, LocalDateTime.now(), "SUCCESS"
             ), conn);
 
             conn.commit();
@@ -150,7 +155,8 @@ public class WalletService implements TransferHandler {
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
         double transferredToday = txnDAO.findBetweenDates(startOfDay, LocalDateTime.now())
             .stream()
-            .filter(t -> t.getSenderId() == studentId && t.getType() == TxnType.TRANSFER)
+            .filter(t -> t.getSenderId() == studentId
+                         && (t.getType() == TxnType.TRANSFER || t.getType() == TxnType.SPLIT_SETTLEMENT))
             .mapToDouble(Transaction::getAmount)
             .sum();
 

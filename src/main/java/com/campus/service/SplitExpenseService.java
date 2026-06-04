@@ -254,6 +254,11 @@ public class SplitExpenseService {
         return dues;
     }
 
+    // ── Check a single member ID exists (for per-input UX validation) ──
+    public boolean memberExists(int id) {
+        return studentDAO.existsById(id);
+    }
+
     // ── Validate member IDs exist in DB ───────────────────────
     private void validateMembers(List<Integer> members) {
 

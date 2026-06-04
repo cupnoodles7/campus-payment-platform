@@ -65,17 +65,15 @@ public class SplitMenu {
 
     // ── Equal split ───────────────────────────────────────────
     private void handleEqualSplit() {
+        int paidBy = studentId;
+
+        // Phase A: collect valid member IDs (validated as each is entered)
+        int memberCount = InputValidator.readInt(scanner, "Enter number of people who owe (excluding yourself): ");
+        List<Integer> members = readMemberIds(memberCount, paidBy);
+
+        // Phase B: only the amount can fail now — re-prompt just the amount on error
         while (true) {
             try {
-                int paidBy = studentId;
-                int memberCount = InputValidator.readInt(scanner, "Enter number of people who owe (excluding yourself): ");
-
-                List<Integer> members = new ArrayList<>();
-                for (int i = 1; i <= memberCount; i++) {
-                    int memberId = InputValidator.readInt(scanner, "Enter student ID for member " + i + ": ");
-                    members.add(memberId);
-                }
-
                 double totalAmount = InputValidator.readDouble(scanner, "Enter total amount spent: ");
 
                 String expenseId = splitExpenseService.createSplit(paidBy, members, totalAmount);
@@ -86,7 +84,7 @@ public class SplitMenu {
 
             } catch (SplitExpenseException e) {
                 System.out.println("Error: " + e.getMessage());
-                System.out.print("Try again with new inputs? (yes/no): ");
+                System.out.print("Re-enter the amount? (yes/no): ");
                 String retry = scanner.nextLine().trim();
                 if (retry.equalsIgnoreCase("yes")) {
                     continue;
@@ -99,18 +97,18 @@ public class SplitMenu {
 
     // ── Unequal split ─────────────────────────────────────────
     private void handleUnequalSplit() {
+        int paidBy = studentId;
+
+        // Phase A: collect valid member IDs (validated as each is entered)
+        int memberCount = InputValidator.readInt(scanner, "Enter number of people who owe (excluding yourself): ");
+        List<Integer> members = readMemberIds(memberCount, paidBy);
+
+        // Phase B: only the amounts can fail now — re-prompt just the amounts on error
         while (true) {
             try {
-                int paidBy = studentId;
-                int memberCount = InputValidator.readInt(scanner, "Enter number of people who owe (excluding yourself): ");
-
-                List<Integer> members = new ArrayList<>();
                 Map<Integer, Double> owedAmounts = new HashMap<>();
-
-                for (int i = 1; i <= memberCount; i++) {
-                    int memberId = InputValidator.readInt(scanner, "Enter student ID for member " + i + ": ");
+                for (int memberId : members) {
                     double amount = InputValidator.readDouble(scanner, "Enter amount owed by member " + memberId + ": ");
-                    members.add(memberId);
                     owedAmounts.put(memberId, amount);
                 }
 
@@ -124,7 +122,7 @@ public class SplitMenu {
 
             } catch (SplitExpenseException e) {
                 System.out.println("Error: " + e.getMessage());
-                System.out.print("Try again with new inputs? (yes/no): ");
+                System.out.print("Re-enter the amounts? (yes/no): ");
                 String retry = scanner.nextLine().trim();
                 if (retry.equalsIgnoreCase("yes")) {
                     continue;
@@ -133,6 +131,31 @@ public class SplitMenu {
                 return;
             }
         }
+    }
+
+    // ── Read member IDs, validating each on entry (re-prompts the single bad one) ──
+    private List<Integer> readMemberIds(int memberCount, int paidBy) {
+        List<Integer> members = new ArrayList<>();
+        for (int i = 1; i <= memberCount; i++) {
+            while (true) {
+                int memberId = InputValidator.readInt(scanner, "Enter student ID for member " + i + ": ");
+                if (memberId == paidBy) {
+                    System.out.println("That's you (the payer) — members are only those who owe. Try another ID.");
+                    continue;
+                }
+                if (members.contains(memberId)) {
+                    System.out.println("Member " + memberId + " already added. Try another ID.");
+                    continue;
+                }
+                if (!splitExpenseService.memberExists(memberId)) {
+                    System.out.println("Student " + memberId + " not found. Try another ID.");
+                    continue;
+                }
+                members.add(memberId);
+                break;
+            }
+        }
+        return members;
     }
 
     // ── Settle one due ────────────────────────────────────────

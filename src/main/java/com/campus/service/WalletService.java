@@ -45,11 +45,7 @@ public class WalletService implements TransferHandler {
         FraudDetector.enforceLimit(senderId);
         checkDailyLimit(senderId, amt);
 
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
-            conn.setAutoCommit(false);
-
+        inTransaction("Transfer failed", conn -> {
             Wallet senderWallet = walletDAO.getByStudentId(senderId);
             if (senderWallet == null) throw new WalletNotFoundException("Wallet not found: " + senderId);
 
@@ -67,24 +63,13 @@ public class WalletService implements TransferHandler {
                 senderId, receiverId, amt,
                 type, LocalDateTime.now(), "SUCCESS", null
             ), conn);
+        });
 
-            conn.commit();
-
-            if (FraudDetector.isSuspicious(senderId)) {
-                String alert = "SUSPICIOUS: studentId=" + senderId
-                    + " made more than 5 outgoing transactions within 5 minutes";
-                FileLogger.logError(alert);
-                System.out.println("⚠  " + alert);
-            }
-
-        } catch (Exception e) {
-            if (conn != null) { try { conn.rollback(); } catch (SQLException ignored) {} }
-            if (e instanceof InsufficientBalanceException) throw (InsufficientBalanceException) e;
-            if (e instanceof DailyTransferLimitException)  throw (DailyTransferLimitException) e;
-            if (e instanceof WalletNotFoundException)      throw (WalletNotFoundException) e;
-            throw new DatabaseException("Transfer failed", e);
-        } finally {
-            if (conn != null) { try { conn.setAutoCommit(true); conn.close(); } catch (SQLException ignored) {} }
+        if (FraudDetector.isSuspicious(senderId)) {
+            String alert = "SUSPICIOUS: studentId=" + senderId
+                + " made more than 5 outgoing transactions within 5 minutes";
+            FileLogger.logError(alert);
+            System.out.println("⚠  " + alert);
         }
     }
 
@@ -92,11 +77,7 @@ public class WalletService implements TransferHandler {
     public void deposit(int studentId, double amt) {
         validateAmount(amt);
 
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
-            conn.setAutoCommit(false);
-
+        inTransaction("Deposit failed", conn -> {
             Wallet wallet = walletDAO.getByStudentId(studentId);
             if (wallet == null) throw new WalletNotFoundException("Wallet not found: " + studentId);
             if (wallet.getBalance() + amt > wallet.getBalanceCap())
@@ -109,29 +90,15 @@ public class WalletService implements TransferHandler {
                 studentId, studentId, amt,
                 TxnType.DEPOSIT, LocalDateTime.now(), "SUCCESS", null
             ), conn);
-
-            conn.commit();
-
-        } catch (Exception e) {
-            if (conn != null) { try { conn.rollback(); } catch (SQLException ignored) {} }
-            if (e instanceof BalanceCapExceededException) throw (BalanceCapExceededException) e;
-            if (e instanceof WalletNotFoundException)     throw (WalletNotFoundException) e;
-            throw new DatabaseException("Deposit failed", e);
-        } finally {
-            if (conn != null) { try { conn.setAutoCommit(true); conn.close(); } catch (SQLException ignored) {} }
-        }
+        });
     }
 
-    // Withdraw 
+    // Withdraw
     public void withdraw(int studentId, double amt) {
         validateAmount(amt);
         FraudDetector.enforceLimit(studentId);
 
-        Connection conn = null;
-        try {
-            conn = DBConnection.getConnection();
-            conn.setAutoCommit(false);
-
+        inTransaction("Withdraw failed", conn -> {
             Wallet wallet = walletDAO.getByStudentId(studentId);
             if (wallet == null) throw new WalletNotFoundException("Wallet not found: " + studentId);
             if (wallet.getBalance() < amt) throw new InsufficientBalanceException("Insufficient balance");
@@ -144,23 +111,39 @@ public class WalletService implements TransferHandler {
                 TxnType.WITHDRAW, LocalDateTime.now(), "SUCCESS", null
             ), conn);
             FileLogger.logInfo("Withdrew " + amt + " from studentId=" + studentId);
+        });
+
+        if (FraudDetector.isSuspicious(studentId)) {
+            String alert = "SUSPICIOUS: studentId=" + studentId
+                + " made more than 5 outgoing transactions within 5 minutes";
+            FileLogger.logError(alert);
+            System.out.println("⚠  " + alert);
+        }
+    }
+
+    //Transaction template — owns the JDBC open / setAutoCommit / commit / rollback / close
+    
+    private void inTransaction(String failureMessage, TxnAction action) {
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            action.execute(conn);   // the only part that differs per operation
+
             conn.commit();
-
-            if (FraudDetector.isSuspicious(studentId)) {
-                String alert = "SUSPICIOUS: studentId=" + studentId
-                    + " made more than 5 outgoing transactions within 5 minutes";
-                FileLogger.logError(alert);
-                System.out.println("⚠  " + alert);
-            }
-
         } catch (Exception e) {
             if (conn != null) { try { conn.rollback(); } catch (SQLException ignored) {} }
-            if (e instanceof InsufficientBalanceException) throw (InsufficientBalanceException) e;
-            if (e instanceof WalletNotFoundException)      throw (WalletNotFoundException) e;
-            throw new DatabaseException("Withdraw failed", e);
+            if (e instanceof RuntimeException re) throw re;
+            throw new DatabaseException(failureMessage, e);
         } finally {
             if (conn != null) { try { conn.setAutoCommit(true); conn.close(); } catch (SQLException ignored) {} }
         }
+    }
+
+    @FunctionalInterface
+    private interface TxnAction {
+        void execute(Connection conn) throws Exception;
     }
 
     // Helpers

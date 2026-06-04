@@ -26,25 +26,7 @@ public class SplitExpenseService {
         FileLogger.logInfo("Creating equal split — paidBy: " + paidBy +
                            ", members: " + members + ", totalAmount: " + totalAmount);
 
-        if (members == null || members.isEmpty()) {
-            FileLogger.logWarn("createSplit failed — member list is empty");
-            throw new SplitExpenseException("Member list cannot be empty");
-        }
-        if (totalAmount <= 0) {
-            FileLogger.logWarn("createSplit failed — invalid totalAmount: " + totalAmount);
-            throw new SplitExpenseException("Total amount must be positive");
-        }
-        if (members.contains(paidBy)) {
-            FileLogger.logWarn("createSplit failed — paidBy " + paidBy + " is in members list");
-            throw new SplitExpenseException("paidBy should not be in the members list — members are only those who owe");
-        }
-        if (!studentDAO.existsById(paidBy)) {
-            FileLogger.logWarn("createSplit failed — payer not found: " + paidBy);
-            throw new SplitExpenseException("Payer not found: " + paidBy);
-        }
-
-        validateMembers(members);
-        FileLogger.logDebug("All member IDs validated successfully");
+        validateSplitBasics("createSplit", paidBy, members, totalAmount);
 
         String expenseId = UUID.randomUUID().toString();
         int totalPeople = members.size() + 1;
@@ -72,25 +54,7 @@ public class SplitExpenseService {
         FileLogger.logInfo("Creating unequal split — paidBy: " + paidBy +
                            ", members: " + members + ", totalAmount: " + totalAmount);
 
-        if (members == null || members.isEmpty()) {
-            FileLogger.logWarn("createUnequalSplit failed — member list is empty");
-            throw new SplitExpenseException("Member list cannot be empty");
-        }
-        if (totalAmount <= 0) {
-            FileLogger.logWarn("createUnequalSplit failed — invalid totalAmount: " + totalAmount);
-            throw new SplitExpenseException("Total amount must be positive");
-        }
-        if (members.contains(paidBy)) {
-            FileLogger.logWarn("createUnequalSplit failed — paidBy " + paidBy + " is in members list");
-            throw new SplitExpenseException("paidBy should not be in the members list");
-        }
-        if (!studentDAO.existsById(paidBy)) {
-            FileLogger.logWarn("createUnequalSplit failed — payer not found: " + paidBy);
-            throw new SplitExpenseException("Payer not found: " + paidBy);
-        }
-
-        validateMembers(members);
-        FileLogger.logDebug("All member IDs validated successfully");
+        validateSplitBasics("createUnequalSplit", paidBy, members, totalAmount);
 
         for (int memberId : members) {
             if (!owedAmounts.containsKey(memberId)) {
@@ -257,6 +221,31 @@ public class SplitExpenseService {
     // ── Check a single member ID exists (for per-input UX validation) ──
     public boolean memberExists(int id) {
         return studentDAO.existsById(id);
+    }
+
+    // ── Shared guards for both equal & unequal split creation ──
+    // Extracted so the four common checks (and member-existence validation) live in one place.
+    // `op` is only used to label the warning log so each caller stays traceable.
+    private void validateSplitBasics(String op, int paidBy, List<Integer> members, double totalAmount) {
+        if (members == null || members.isEmpty()) {
+            FileLogger.logWarn(op + " failed — member list is empty");
+            throw new SplitExpenseException("Member list cannot be empty");
+        }
+        if (totalAmount <= 0) {
+            FileLogger.logWarn(op + " failed — invalid totalAmount: " + totalAmount);
+            throw new SplitExpenseException("Total amount must be positive");
+        }
+        if (members.contains(paidBy)) {
+            FileLogger.logWarn(op + " failed — paidBy " + paidBy + " is in members list");
+            throw new SplitExpenseException("paidBy should not be in the members list — members are only those who owe");
+        }
+        if (!studentDAO.existsById(paidBy)) {
+            FileLogger.logWarn(op + " failed — payer not found: " + paidBy);
+            throw new SplitExpenseException("Payer not found: " + paidBy);
+        }
+
+        validateMembers(members);
+        FileLogger.logDebug("All member IDs validated successfully");
     }
 
     // ── Validate member IDs exist in DB ───────────────────────
